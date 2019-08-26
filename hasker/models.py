@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth import get_user_model
 
 
 class HaskerUser(AbstractUser):
@@ -21,7 +22,7 @@ class Tag(models.Model):
 class Question(models.Model):
     title = models.CharField(max_length=128)
     content = models.TextField()
-    author = models.ForeignKey(HaskerUser, on_delete=models.CASCADE)
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     asked_date = models.DateTimeField(default=timezone.now)
     tags = models.ManyToManyField(Tag)
 
@@ -31,7 +32,7 @@ class Question(models.Model):
 
 class Answer(models.Model):
     content = models.TextField()
-    author = models.ForeignKey(HaskerUser, on_delete=models.CASCADE)
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     answered_date = models.DateTimeField(default=timezone.now)
     is_correct = models.BooleanField(default=False)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
