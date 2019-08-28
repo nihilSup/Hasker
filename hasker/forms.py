@@ -17,3 +17,11 @@ class HaskerUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = get_user_model()
         fields = '__all__'
+
+
+class UserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+
+    class Meta:
+        model = get_user_model()
+        fields = ('username', 'password', 'email', 'avatar')
