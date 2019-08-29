@@ -47,3 +47,8 @@ def login(request):
             return HttpResponse('Invalid login/pass')
     else:
         return render(request, 'hasker/login.html')
+
+
+def logout(request):
+    auth.logout(request)
+    return HttpResponseRedirect(reverse('index'))
