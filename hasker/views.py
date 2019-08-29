@@ -1,5 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib import auth
+from django.urls import reverse
 
 from .forms import UserForm
 
@@ -25,3 +27,23 @@ def signup(request):
         user_form = UserForm()
     return render(request, 'hasker/signup.html',
                   dict(user_form=user_form, registered=registered))
+
+
+def login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = auth.authenticate(username=username, password=password)
+
+        if user:
+            if user.is_active:
+                auth.login(request, user)
+                return HttpResponseRedirect(reverse('index'))
+            else:
+                return HttpResponse('Account is disabled.')
+        else:
+            print('Invalid login/pass'.format(username, password))
+            return HttpResponse('Invalid login/pass')
+    else:
+        return render(request, 'hasker/login.html')
