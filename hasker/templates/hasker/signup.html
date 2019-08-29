@@ -6,19 +6,46 @@
 {% endblock title_block %}
 
 {% block content %}
-<h1>About Page</h1>
+<h1 class="ml-2 mt-2">Sign up</h1>
 {% if registered %}
-Thank you for registering!
+<dir class="ml-2">Sign up complited!</dir>
 {% else %}
-To register:
-<form id="user_form" method="post" action="{% url 'signup' %}"
+<form class="mt-5" id="user_form" method="post" action="{% url 'signup' %}"
     enctype="multipart/form-data">
 
     {% csrf_token %}
 
-    {{ user_form.as_p }}
-
-    <input type="submit" name="submit" value="Sign Up!">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="card align-items-center" style="width: 25rem;">
+            <div class="card-header w-100">
+                Profile details
+            </div>
+            <div class="card-body">
+                {% if error_message %}
+                    <p class="bg-danger p-d ml-b">{{ error_message }}</p>
+                {% endif %}
+                
+                {% for field in user_form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}" class="">
+                            {{field.label_tag}}
+                        </label>
+                        <div class="">
+                            {{ field }}
+                        </div>
+                        {% if field.errors %}
+                        <div class="invalid-feedback d-block">
+                        {{ field.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <div class="col-md-6 col-md-offset-4">
+                    <input type="submit" name="submit" value="Sign Up!" class="btn btn-primary btn-block">
+                </div>
+            </div>
+        </div>
+    </div>
 </form>
 
 {% endif %}

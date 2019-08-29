@@ -21,7 +21,16 @@ class HaskerUserChangeForm(UserChangeForm):
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
+    password_re = forms.CharField(widget=forms.PasswordInput())
 
     class Meta:
         model = get_user_model()
-        fields = ('username', 'password', 'email', 'avatar')
+        fields = ('username', 'password', 'password_re', 'email', 'avatar')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({
+                'class': 'form-control',
+                'placeholder': field.label or ''
+            })

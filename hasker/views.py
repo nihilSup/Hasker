@@ -11,24 +11,29 @@ def index(request):
 
 
 def signup(request):
+    tmpl_name = 'hasker/signup.html'
     registered = False
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
         if user_form.is_valid():
-            user = user_form.save()
-            # to hash the password
-            user.set_password(user.password)
-            if 'avatar' in request.FILES:
-                print("HAHAHAHA")
-                user.avatar = request.FILES['avatar']
-            user.save()
-            registered = True
+            if(user_form.cleaned_data['password'] !=
+               user_form.cleaned_data['password_re']):
+                user_form.add_error('password', 'Passwords do not match')
+                print(user_form.errors)
+            else:
+                user = user_form.save()
+                # to hash the password
+                user.set_password(user.password)
+                if 'avatar' in request.FILES:
+                    user.avatar = request.FILES['avatar']
+                user.save()
+                registered = True
         else:
             print(user_form.errors)
     else:
         # provide empty fields for new user registration
         user_form = UserForm()
-    return render(request, 'hasker/signup.html',
+    return render(request, tmpl_name,
                   dict(user_form=user_form, registered=registered))
 
 
