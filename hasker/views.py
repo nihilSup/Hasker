@@ -18,6 +18,9 @@ def signup(request):
             user = user_form.save()
             # to hash the password
             user.set_password(user.password)
+            if 'avatar' in request.FILES:
+                print("HAHAHAHA")
+                user.avatar = request.FILES['avatar']
             user.save()
             registered = True
         else:

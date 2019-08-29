@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+
+{% load staticfiles %}
+
 <html lang="en">
 <head>
     {% block head %}
@@ -25,6 +28,18 @@
         </form>
         <ul class="navbar-nav px-3 ml-auto">
         {% if user.is_authenticated %}
+            <li class="nav-item">
+                <div class="inset">
+                    {% if user.avatar %}
+                    <img src="{{ user.avatar.url }}"
+                        blalba {{ user.avatar.url }}
+                         width="40" height="40" class="img-fluid img-thumbnail"/>
+                    {% else %}
+                    <img src={% static "hasker/images/default.png" %} 
+                         width="40" height="40" class="img-fluid img-thumbnail"/>
+                    {% endif %}
+                </div>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'logout' %}">
                     Logout
