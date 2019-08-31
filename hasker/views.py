@@ -11,7 +11,6 @@ def index(request):
 
 
 def signup(request):
-    tmpl_name = 'hasker/signup.html'
     registered = False
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
@@ -33,7 +32,7 @@ def signup(request):
     else:
         # provide empty fields for new user registration
         user_form = UserForm()
-    return render(request, tmpl_name,
+    return render(request, 'hasker/signup.html',
                   dict(user_form=user_form, registered=registered))
 
 
