@@ -21,10 +21,6 @@
                 Profile details
             </div>
             <div class="card-body">
-                {% if error_message %}
-                    <p class="bg-danger p-d ml-b">{{ error_message }}</p>
-                {% endif %}
-                
                 {% for field in user_form %}
                     <div class="form-group">
                         <label for="{{ field.id_for_label }}" class="">
