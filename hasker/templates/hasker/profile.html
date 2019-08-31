@@ -12,33 +12,7 @@
 
     {% csrf_token %}
 
-    <div class="col-md-8 col-md-offset-2">
-        <div class="card align-items-center" style="width: 25rem;">
-            <div class="card-header w-100">
-                Profile details
-            </div>
-            <div class="card-body">
+    {% include "hasker/_profile_form.html" with card_header="Profile details" button_name='Save' form_data=profile_form only%}
 
-                {% for field in profile_form %}
-                    <div class="form-group">
-                        <label for="{{ field.id_for_label }}" class="">
-                            {{field.label_tag}}
-                        </label>
-                        <div class="">
-                            {{ field }}
-                        </div>
-                        {% if field.errors %}
-                        <div class="invalid-feedback d-block">
-                        {{ field.errors }}
-                        </div>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-                <div class="col-md-6 col-md-offset-4">
-                    <input type="submit" name="submit" value="Save" class="btn btn-primary btn-block">
-                </div>
-            </div>
-        </div>
-    </div>
 </form>
 {% endblock content %}
