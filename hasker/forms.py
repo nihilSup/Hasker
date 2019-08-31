@@ -34,3 +34,13 @@ class UserForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': field.label or ''
             })
+
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = get_user_model()
+        fields = ('username', 'email', 'avatar')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs['readonly'] = True

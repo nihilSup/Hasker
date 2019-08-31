@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth
 from django.urls import reverse
 
-from .forms import UserForm
+from .forms import UserForm, UserProfileForm
 
 
 def index(request):
@@ -59,3 +59,19 @@ def signup(request):
         user_form = UserForm()
     return render(request, 'hasker/signup.html',
                   dict(user_form=user_form, registered=registered))
+
+
+def profile(request):
+    if request.method == 'POST':
+        profile_form = UserProfileForm(data=request.POST,
+                                       instance=request.user,
+                                       files=request.FILES or None)
+        if profile_form.is_valid():
+            user_model = profile_form.save()
+            user_model.save()
+        else:
+            print(profile_form.errors)
+    else:
+        profile_form = UserProfileForm(instance=request.user)
+    return render(request, 'hasker/profile.html',
+                  dict(profile_form=profile_form))
