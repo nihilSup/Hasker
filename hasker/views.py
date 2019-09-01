@@ -72,8 +72,6 @@ def profile(request):
                                        files=request.FILES or None)
         if profile_form.is_valid():
             user_model = profile_form.save()
-            # TODO: do I need this call?
-            user_model.save()
         else:
             print(profile_form.errors)
     else:
