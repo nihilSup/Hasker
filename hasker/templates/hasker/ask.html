@@ -1,0 +1,18 @@
+{% extends 'hasker/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Hasker: Ask
+{% endblock title_block %}
+
+{% block content %}
+<h1 class="ml-2 mt-2">Ask new question</h1>
+<form class="mt-5" id="q_form" method="post" action="{% url 'ask' %}">
+
+    {% csrf_token %}
+
+    {% include "hasker/_profile_form.html" with card_header="Question" button_name='Ask!' form_data=q_form only%}
+
+</form>
+
+{% endblock content %}

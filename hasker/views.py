@@ -3,8 +3,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 
-from .forms import UserForm, UserProfileForm
+from .forms import UserForm, UserProfileForm, QuestionForm
 
 
 def index(request):
@@ -71,6 +72,7 @@ def profile(request):
                                        files=request.FILES or None)
         if profile_form.is_valid():
             user_model = profile_form.save()
+            # TODO: do I need this call?
             user_model.save()
         else:
             print(profile_form.errors)
@@ -78,3 +80,20 @@ def profile(request):
         profile_form = UserProfileForm(instance=request.user)
     return render(request, 'hasker/profile.html',
                   dict(profile_form=profile_form))
+
+
+@login_required(login_url='login')
+def ask(request):
+    if request.method == 'POST':
+        q_form = QuestionForm(data=request.POST)
+        if q_form.is_valid():
+            q_model = q_form.save(commit=False)
+            q_model.author = request.user
+            q_model.asked_date = timezone.now()
+            q_model.save()
+        else:
+            print(q_form.errors)
+    else:
+        q_form = QuestionForm()
+    return render(request, 'hasker/ask.html',
+                  dict(q_form=q_form))

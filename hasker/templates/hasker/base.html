@@ -66,39 +66,38 @@
     </nav>
     {% endblock header_block %}
     
-    {% block sidebar_block %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-10 mt-2">
-            <div class="jumbotron">
-                <h1>Hello, world!</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 mt-2">
+                {% block content %}
+                    <h1>Hello, world!</h1>
 
-                <p>
-                This is a template for a simple marketing or informational website. It
-                includes a large callout called the hero unit and three supporting pieces
-                of content. Use it as a starting point to create something more unique.
-                </p>
-                <p>
-                    <a class="btn btn-primary">Learn more »</a>
-                </p>
+                    <p>
+                    This is a template for a simple marketing or informational website. It
+                    includes a large callout called the hero unit and three supporting pieces
+                    of content. Use it as a starting point to create something more unique.
+                    </p>
+                    <p>
+                        <a class="btn btn-primary">Learn more »</a>
+                    </p>
+                {% endblock content %}
             </div>
-        </div>
-        <div class="ml-auto mt-2">
-            <div class="sidebar-heading">
-                <a class="btn btn-primary btn-block" href="">
-                    Ask!
-                </a>
+            {% block sidebar_block %}
+            <div class="ml-auto mt-2">
+                {% if user.is_authenticated %}
+                <div class="sidebar-heading">
+                    <a class="btn btn-primary btn-block" href="{% url 'ask' %}">
+                        Ask!
+                    </a>
+                </div>
+                {% endif %}
+                <div class="list-group mt-1">
+                    <a href="#" class="list-group-item list-group-item-action">Dashboard</a>
+                </div>
             </div>
-            <div class="list-group mt-1">
-                <a href="#" class="list-group-item list-group-item-action">Dashboard</a>
-            </div>
+            {% endblock sidebar_block %}
         </div>
     </div>
-</div>
-    {% endblock sidebar_block %}
-    
-    {% block content %}
-    {% endblock content %}
     
     <footer>
     {% block footer %} 
