@@ -14,6 +14,6 @@ class CustomUserAdmin(UserAdmin):
     list_display = UserAdmin.list_display + ('avatar', )
 
 
-admin.register(Tag)
-admin.register(Question)
-admin.register(Answer)
+admin.site.register(Tag)
+admin.site.register(Question)
+admin.site.register(Answer)
