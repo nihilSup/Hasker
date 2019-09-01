@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 from .forms import UserForm, UserProfileForm
 
@@ -30,6 +31,7 @@ def login(request):
         return render(request, 'hasker/login.html')
 
 
+@login_required(login_url='login')
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect(reverse('index'))
@@ -61,6 +63,7 @@ def signup(request):
                   dict(user_form=user_form, registered=registered))
 
 
+@login_required(login_url='login')
 def profile(request):
     if request.method == 'POST':
         profile_form = UserProfileForm(data=request.POST,
