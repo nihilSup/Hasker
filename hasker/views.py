@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib import auth
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -101,3 +101,8 @@ def ask(request):
         q_form = QuestionForm()
     return render(request, 'hasker/ask.html',
                   dict(q_form=q_form))
+
+
+def question(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, 'hasker/question.html', dict(question=question))

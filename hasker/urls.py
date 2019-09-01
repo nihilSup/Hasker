@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.urls import path
 
 from hasker import views
 
@@ -8,5 +9,6 @@ urlpatterns = [
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', views.logout, name='logout'),
     url(r'^profile/$', views.profile, name='profile'),
-    url(r'^ask/$', views.ask, name='ask')
+    url(r'^ask/$', views.ask, name='ask'),
+    path(r'questions/<int:question_id>', views.question, name='question')
 ]
