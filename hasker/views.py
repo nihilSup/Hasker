@@ -4,12 +4,18 @@ from django.contrib import auth
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.core.paginator import Paginator
 
 from .forms import UserForm, UserProfileForm, QuestionForm
+from .models import Question
 
 
 def index(request):
-    return render(request, 'hasker/index.html')
+    all_q = Question.objects.order_by('-asked_date')
+    paginator = Paginator(all_q, 4)
+    page = request.GET.get('page')
+    questions = paginator.get_page(page)
+    return render(request, 'hasker/index.html', dict(questions=questions))
 
 
 def login(request):
