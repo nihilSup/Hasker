@@ -10,19 +10,19 @@
     {% if questions %}
         {% for question in questions %}
         <div class="card mb-3" style="max-width: 540px;">
-        <div class="row no-gutters">
-            <div class="col-md-8">
-            <div class="card-body">
-                <h5 class="card-title"><a href="#">{{ question.title }}</a></h5>
-                <p class="card-text">
-                    Some random question text
-                </p>
-                <p class="card-text">
-                    <small class="text-muted">{{ question.author }} asked some time ago</small>
-                </p>
+            <div class="row no-gutters">
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="#">{{ question.title }}</a></h5>
+                        <p class="card-text">
+                            Some random question text
+                        </p>
+                        <p class="card-text">
+                            <small class="text-muted">{{ question.author }} asked some time ago</small>
+                        </p>
+                    </div>
+                </div>
             </div>
-            </div>
-        </div>
         </div>
         {% endfor %}
 
