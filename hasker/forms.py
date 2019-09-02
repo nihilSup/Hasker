@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth import get_user_model
 
-from .models import HaskerUser, Question, Tag
+from .models import HaskerUser, Question, Tag, Answer
 
 
 class HaskerUserCreationForm(UserCreationForm):
@@ -61,3 +61,9 @@ class QuestionForm(BootsModelForm):
             initial['tags'] = [
                 tag.pk for tag in kwargs['instance'].tag_set.all()]
         super().__init__(*args, **kwargs)
+
+
+class AnswerForm(BootsModelForm):
+    class Meta:
+        model = Answer
+        fields = ('content',)

@@ -6,8 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.core.paginator import Paginator
 
-from .forms import UserForm, UserProfileForm, QuestionForm
-from .models import Question
+from .forms import UserForm, UserProfileForm, QuestionForm, AnswerForm
+from .models import Question, Answer
 
 
 def index(request):
@@ -107,4 +107,21 @@ def ask(request):
 
 def question(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
-    return render(request, 'hasker/question.html', dict(question=question))
+    answers = Answer.objects.filter(question=question)
+    if request.method == 'POST':
+        add_answer_form = AnswerForm(request.POST)
+        if add_answer_form.is_valid():
+            answer_model = add_answer_form.save(commit=False)
+            answer_model.question = question
+            answer_model.author = request.user
+            answer_model.answered_date = timezone.now()
+            answer_model.is_correct = False
+            answer_model.save()
+        else:
+            print(add_answer_form.errors)
+    else:
+        add_answer_form = AnswerForm()
+    answers = Answer.objects.filter(question=question)
+    return render(request, 'hasker/question.html',
+                  dict(question=question, answers=answers,
+                       add_answer_form=add_answer_form))
