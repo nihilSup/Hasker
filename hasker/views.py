@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib import auth
 from django.urls import reverse
@@ -96,6 +96,7 @@ def ask(request):
             q_model.asked_date = timezone.now()
             q_model.save()
             q_form.save_m2m()
+            return redirect('question', question_id=q_model.id)
         else:
             print(q_form.errors)
     else:
