@@ -15,7 +15,9 @@
                     </p>
                     <div class="d-flex">
                         {% for tag in question.tags.all %}
-                            <div class="p-0 mr-2">{{ tag.name }}</div>
+                            <div class="p-0 mr-2">
+                                <span class="badge badge-dark">{{ tag.name }}</span>
+                            </div>
                         {% endfor %}
                         <div class="p-0 mr-2 ml-auto">
                         {% if question.author.avatar %}
