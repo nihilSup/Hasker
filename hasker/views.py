@@ -95,6 +95,7 @@ def ask(request):
             q_model.author = request.user
             q_model.asked_date = timezone.now()
             q_model.save()
+            q_form.save_m2m()
         else:
             print(q_form.errors)
     else:
