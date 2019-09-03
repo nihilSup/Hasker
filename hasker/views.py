@@ -157,5 +157,5 @@ def question_votes(request, question_id):
 
 
 def answer_votes(request, answer_id):
-    answer = get_object_or_404(Question, pk=answer_id)
+    answer = get_object_or_404(Answer, pk=answer_id)
     return process_vote(answer, request)
