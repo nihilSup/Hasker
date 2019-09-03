@@ -43,3 +43,10 @@ class Answer(models.Model):
     answered_date = models.DateTimeField(default=timezone.now)
     is_correct = models.BooleanField(default=False)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    up_votes = models.ManyToManyField(UserModel, blank=True,
+                                      related_name='answer_up')
+    down_votes = models.ManyToManyField(UserModel, blank=True,
+                                        related_name='answer_down')
+
+    def qual_name(self):
+        return f"{self.__class__.__name__}_{self.id}"

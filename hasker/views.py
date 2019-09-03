@@ -154,3 +154,8 @@ def process_vote(obj, request):
 def question_votes(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     return process_vote(question, request)
+
+
+def answer_votes(request, answer_id):
+    answer = get_object_or_404(Question, pk=answer_id)
+    return process_vote(answer, request)

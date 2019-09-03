@@ -12,5 +12,7 @@ urlpatterns = [
     url(r'^ask/$', views.ask, name='ask'),
     path(r'questions/<int:question_id>', views.question, name='question'),
     path(r'questions/<int:question_id>/votes/', views.question_votes,
-         name='question_votes')
+         name='question_votes'),
+    path(r'answers/<int:answer_id>/votes/', views.answer_votes,
+         name='answer_votes'),
 ]
