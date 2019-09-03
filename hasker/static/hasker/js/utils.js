@@ -26,7 +26,6 @@ function vote_handler(vote_url, id, reqType, voteType) {
             dataType: 'html',
             success: function(response) {
                 response = JSON.parse(response);
-                console.log('updating', id + ' ' + 'button.vote-up')
                 if (response['user_ups'] != 0) {
                     $(id + ' ' + 'button.vote-up').attr('disabled', true)
                     $(id + ' ' + 'button.vote-down').attr('disabled', false)
