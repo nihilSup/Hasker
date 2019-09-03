@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.core.paginator import Paginator
 
+import json
+
 from .forms import UserForm, UserProfileForm, QuestionForm, AnswerForm
 from .models import Question, Answer
 
@@ -125,3 +127,26 @@ def question(request, question_id):
     return render(request, 'hasker/question.html',
                   dict(question=question, answers=answers,
                        add_answer_form=add_answer_form))
+
+
+@login_required(login_url='login')
+def question_votes(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    user_ups = question.up_votes.filter(id=request.user.id).count()
+    user_downs = question.down_votes.filter(id=request.user.id).count()
+    if request.method == 'POST':
+        if request.POST['vote_type'] == 'up':
+            if user_ups == 0 and user_downs == 0:
+                question.up_votes.add(request.user)
+            elif user_ups == 0 and user_downs != 0:
+                question.down_votes.remove(request.user)
+        if request.POST['vote_type'] == 'down':
+            if user_ups == 0 and user_downs == 0:
+                question.down_votes.add(request.user)
+            elif user_ups != 0 and user_downs == 0:
+                question.up_votes.remove(request.user)
+    return HttpResponse(json.dumps(dict(
+        user_ups=question.up_votes.filter(id=request.user.id).count(),
+        user_downs=question.down_votes.filter(id=request.user.id).count(),
+        votes=(question.up_votes.count() - question.down_votes.count())
+    )))

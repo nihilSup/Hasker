@@ -10,10 +10,14 @@
         <div class="row no-gutters">
                 <div class="card-body">
                     <h5 class="card-title"><a href="#">{{ question.title }}</a></h5>
-                    <p class="card-text">
-                            {{ question.content }}
-                    </p>
-                    <div class="d-flex">
+                    <div class="row">
+                        {% url 'question_votes' question.id as vote_url %}
+                        {% include "hasker/_vote.html" with vote_url=vote_url obj_id="question" %}
+                        <p class="card-text">
+                                {{ question.content }}
+                        </p>
+                    </div>
+                    <div class="d-flex mt-2">
                         {% for tag in question.tags.all %}
                             <div class="p-0 mr-2">
                                 <span class="badge badge-dark">{{ tag.name }}</span>
