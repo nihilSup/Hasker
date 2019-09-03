@@ -40,7 +40,7 @@ def login(request):
         return render(request, 'hasker/login.html')
 
 
-@login_required(login_url='login')
+@login_required
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect(reverse('index'))
@@ -72,7 +72,7 @@ def signup(request):
                   dict(user_form=user_form, registered=registered))
 
 
-@login_required(login_url='login')
+@login_required
 def profile(request):
     if request.method == 'POST':
         profile_form = UserProfileForm(data=request.POST,
@@ -88,7 +88,7 @@ def profile(request):
                   dict(profile_form=profile_form))
 
 
-@login_required(login_url='login')
+@login_required
 def ask(request):
     if request.method == 'POST':
         q_form = QuestionForm(data=request.POST)
@@ -150,7 +150,7 @@ def process_vote(obj, request):
     )))
 
 
-@login_required(login_url='login')
+@login_required
 def question_votes(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     return process_vote(question, request)
