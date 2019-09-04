@@ -1,7 +1,7 @@
 <div class="vote-block p-0 mr-2" id="{{ obj_id }}">
     {% if user.is_authenticated %}
         <button class="btn btn-secondary vote-up">
-            &uarr;
+            &#9650;
         </button>
     {% endif %}
     <div class="votes-count mx-auto">
@@ -9,7 +9,7 @@
     </div>
     {% if user.is_authenticated %}
         <button class="btn btn-secondary vote-down">
-            &darr;
+            &#9660;
         </button>
     {% endif %}
 </div>
