@@ -34,6 +34,7 @@ class Votable(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+        # smells, another solution with calc field denies order by
         self.votes = self.up_votes.count() - self.down_votes.count()
         super().save(update_fields=["votes"])
 
