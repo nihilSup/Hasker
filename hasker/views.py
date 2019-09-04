@@ -127,6 +127,9 @@ def question(request, question_id):
         Answer.objects.filter(question=question)
         .order_by('-votes', '-answered_date')
     )
+    paginator = Paginator(answers, 4)
+    page = request.GET.get('page')
+    answers = paginator.get_page(page)
     return render(request, 'hasker/question.html',
                   dict(question=question, answers=answers,
                        add_answer_form=add_answer_form))

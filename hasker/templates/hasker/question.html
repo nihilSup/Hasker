@@ -65,6 +65,7 @@
                 </div>
             </div>
         {% endfor %}
+        {% include "hasker/_pager.html" with paged_obj=answers %}
     {% else %}
         <p class="mt-3">
             No answers yet ...
