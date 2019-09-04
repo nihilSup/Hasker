@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.core.paginator import Paginator
+from django.db.models import Count
 
 import json
 
@@ -109,7 +110,7 @@ def ask(request):
 
 def question(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
-    answers = Answer.objects.filter(question=question)
+    answers = Answer.objects.filter(question=question).annotate().order_by('-answered_date')
     if request.method == 'POST':
         add_answer_form = AnswerForm(request.POST)
         if add_answer_form.is_valid():
@@ -136,17 +137,21 @@ def process_vote(obj, request):
         if request.POST['vote_type'] == 'up':
             if user_ups == 0 and user_downs == 0:
                 obj.up_votes.add(request.user)
+                obj.save()
             elif user_ups == 0 and user_downs != 0:
                 obj.down_votes.remove(request.user)
+                obj.save()
         if request.POST['vote_type'] == 'down':
             if user_ups == 0 and user_downs == 0:
                 obj.down_votes.add(request.user)
+                obj.save()
             elif user_ups != 0 and user_downs == 0:
                 obj.up_votes.remove(request.user)
+                obj.save()
     return HttpResponse(json.dumps(dict(
         user_ups=obj.up_votes.filter(id=request.user.id).count(),
         user_downs=obj.down_votes.filter(id=request.user.id).count(),
-        votes=(obj.up_votes.count() - obj.down_votes.count())
+        votes=(obj.votes)
     )))
 
 
