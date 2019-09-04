@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.core.paginator import Paginator
+from django.core.mail import send_mail
 from django.db.models import Count
 
 import json
@@ -123,6 +124,14 @@ def question(request, question_id):
             answer_model.answered_date = timezone.now()
             answer_model.is_correct = False
             answer_model.save()
+            link = reverse("question", args=[question_id])
+            send_mail(
+                'You have a new answer!',
+                f'Hi, check new answer to {link}',
+                'helper@hasker.com',
+                [question.author.email],
+                fail_silently=True,
+            )
         else:
             print(add_answer_form.errors)
     else:
