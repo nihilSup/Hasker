@@ -6,7 +6,22 @@
 {% endblock title_block %}
 
 {% block content %}
-    <h1 class="ml-2 mt-2">New questions</h1>
+    <ul class="nav nav-tabs mb-3 mt-3">
+        <li class="nav-item">
+            {% if sortedby == "-asked_date" %}
+                <h2><a class="nav-link active" href="{% url 'index' %}">New questions</a></h2>
+            {% else %}
+                <h2><a class="nav-link" href="{% url 'index' %}">New questions</a></h2>
+            {% endif %}
+        </li>
+        <li class="nav-item">
+            {% if sortedby == "-votes" %}
+                <h2><a class="nav-link active" href="{% url 'index' %}?sortby=-votes">Hot questions</a></h2>
+            {% else %}
+                <h2><a class="nav-link" href="{% url 'index' %}?sortby=-votes">Hot questions</a></h2>
+            {% endif %}
+        </li>
+    </ul>
     {% if questions %}
         {% for question in questions %}
         <div class="card mb-3" style="max-width: 540px;">
@@ -28,7 +43,7 @@
                                     <span class="badge badge-dark">{{ tag.name }}</span>
                                 </div>
                             {% endfor %}
-                            <div class=" ml-auto">
+                            <div class="ml-auto">
                                 <div class="p-0 mr-2 ml-auto">
                                     {% if question.author.avatar %}
                                         <img src="{{ question.author.avatar.url }}"
@@ -39,17 +54,23 @@
                                     {% endif %}
                                     {{ question.author.username }}
                                 </div>
-                                <p class="p-0 mt-2 ml-auto card-text">
-                                    <small class="text-muted">asked {{ question.asked_date|timesince }} ago</small>
-                                </p>
                             </div>
+                        </div>
+                        <div class="d-flex mt-2">
+                            <p class="p-0 mt-2 ml-auto card-text">
+                                <small class="text-muted">asked {{ question.asked_date|timesince }} ago</small>
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         {% endfor %}
-        {% include "hasker/_pager.html" with paged_obj=questions %}
+        {% if sortedby == '-votes' %}
+            {% include "hasker/_pager.html" with paged_obj=questions query_addon='&sortby=-votes'%}
+        {% else %}
+            {% include "hasker/_pager.html" with paged_obj=questions%}
+        {% endif %}
     {% else %}
         There are no questions =(
     {% endif %}

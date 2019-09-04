@@ -14,11 +14,15 @@ from .models import Question, Answer
 
 
 def index(request):
-    all_q = Question.objects.order_by('-asked_date')
+    field_name = request.GET.get('sortby')
+    if field_name not in ('-asked_date', '-votes'):
+        field_name = '-asked_date'
+    all_q = Question.objects.order_by(field_name)
     paginator = Paginator(all_q, 4)
     page = request.GET.get('page')
     questions = paginator.get_page(page)
-    return render(request, 'hasker/index.html', dict(questions=questions))
+    return render(request, 'hasker/index.html', dict(questions=questions,
+                                                     sortedby=field_name))
 
 
 def login(request):
