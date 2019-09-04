@@ -33,8 +33,9 @@ class Votable(models.Model):
     votes = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
-        self.votes = self.up_votes.count() - self.down_votes.count()
         super().save(*args, **kwargs)
+        self.votes = self.up_votes.count() - self.down_votes.count()
+        super().save(update_fields=["votes"])
 
 
 class Question(Votable):
