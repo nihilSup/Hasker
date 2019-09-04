@@ -110,7 +110,6 @@ def ask(request):
 
 def question(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
-    answers = Answer.objects.filter(question=question).annotate().order_by('-answered_date')
     if request.method == 'POST':
         add_answer_form = AnswerForm(request.POST)
         if add_answer_form.is_valid():
@@ -124,7 +123,10 @@ def question(request, question_id):
             print(add_answer_form.errors)
     else:
         add_answer_form = AnswerForm()
-    answers = Answer.objects.filter(question=question)
+    answers = (
+        Answer.objects.filter(question=question)
+        .order_by('-votes', '-answered_date')
+    )
     return render(request, 'hasker/question.html',
                   dict(question=question, answers=answers,
                        add_answer_form=add_answer_form))
