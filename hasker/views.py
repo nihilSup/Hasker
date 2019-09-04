@@ -135,7 +135,7 @@ def question(request, question_id):
 def process_vote(obj, request):
     user_ups = obj.up_votes.filter(id=request.user.id).count()
     user_downs = obj.down_votes.filter(id=request.user.id).count()
-    if request.method == 'POST':
+    if request.method == 'POST' and request.user.is_authenticated:
         if request.POST['vote_type'] == 'up':
             if user_ups == 0 and user_downs == 0:
                 obj.up_votes.add(request.user)
@@ -157,13 +157,11 @@ def process_vote(obj, request):
     )))
 
 
-@login_required
 def question_votes(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     return process_vote(question, request)
 
 
-@login_required
 def answer_votes(request, answer_id):
     answer = get_object_or_404(Answer, pk=answer_id)
     return process_vote(answer, request)
