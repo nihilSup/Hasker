@@ -156,6 +156,7 @@ def question_votes(request, question_id):
     return process_vote(question, request)
 
 
+@login_required
 def answer_votes(request, answer_id):
     answer = get_object_or_404(Answer, pk=answer_id)
     return process_vote(answer, request)
