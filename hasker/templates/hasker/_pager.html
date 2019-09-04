@@ -1,0 +1,37 @@
+<ul class="pagination">
+    {% if paged_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page=1" aria-label="Previous">
+                first
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ paged_obj.previous_page_number }}"
+                aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">previous</span>
+            </a>
+        </li>
+    {% endif %}
+
+    {% if paged_obj.has_previous or paged_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="#">
+                {{ paged_obj.number }}
+            </a>
+        </li>
+    {% endif %}
+
+    {% if paged_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ paged_obj.next_page_number }}"
+                aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">next</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ paged_obj.paginator.num_pages }}">last</a>
+        </li>
+    {% endif %}
+</ul>
