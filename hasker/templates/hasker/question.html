@@ -12,7 +12,7 @@
                     <h5 class="card-title"><a href="#">{{ question.title }}</a></h5>
                     <div class="d-flex">
                         {% url 'question_votes' question.id as vote_url %}
-                        {% include "hasker/_vote.html" with vote_url=vote_url obj_id="question" %}
+                        {% include "hasker/_vote.html" with vote_url=vote_url obj_id="question" init_votes=question.votes %}
                         <p class="card-text ml-2">
                             {{ question.content }}
                         </p>
@@ -43,8 +43,29 @@
                 <div class="row no-gutters">
                     <div class="card-body">
                         <div class="d-flex">
-                            {% url 'answer_votes' answer.id as vote_url %}
-                            {% include "hasker/_vote.html" with vote_url=vote_url obj_id=answer.qual_name %}
+                            <div class="p-0 mr-2">
+                                
+                                {% url 'answer_votes' answer.id as vote_url %}
+                                {% include "hasker/_vote.html" with vote_url=vote_url obj_id=answer.qual_name init_votes=answer.votes %}
+                                
+                                {% if answer.is_correct %}
+                                    <div class="btn btn-outline mt-1">
+                                        <span style="font-size:100%">&starf;</span>
+                                    </div>
+                                {% elif corr_answer == False and user == question.author%}
+                                    <button class="btn btn-outline-dark mt-1" id="{{ answer.qual_name }}">
+                                        <span class="" style="font-size:100%">&star;</span>
+                                    </button>
+                                    {% url 'select_answer' answer.id as mark_url %}
+                                        <script>
+                                            $(document).ready(function() {
+                                                var objId = "button#{{ answer.qual_name }}";
+                                                var mark_url = "{{ mark_url }}";
+                                                $(objId).click(mark_answer(mark_url, objId));
+                                            });
+                                        </script>
+                                {% endif %}
+                            </div>
                             <p class="p-0 card-text">
                                 {{ answer.content }}
                             </p>

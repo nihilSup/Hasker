@@ -5,7 +5,7 @@
         </button>
     {% endif %}
     <div class="votes-count mx-auto">
-        Vote #
+        {{init_votes}}
     </div>
     {% if user.is_authenticated %}
         <button class="btn btn-secondary vote-down">

@@ -10,7 +10,7 @@ from django.db.models import Count
 
 import json
 
-from .forms import UserForm, UserProfileForm, QuestionForm, AnswerForm
+from .forms import (UserForm, UserProfileForm, QuestionForm, AnswerForm)
 from .models import Question, Answer
 
 
@@ -140,12 +140,15 @@ def question(request, question_id):
         Answer.objects.filter(question=question)
         .order_by('-votes', '-answered_date')
     )
+    corr_answer = any(answer.is_correct for answer in answers)
+
     paginator = Paginator(answers, 4)
     page = request.GET.get('page')
     answers = paginator.get_page(page)
     return render(request, 'hasker/question.html',
                   dict(question=question, answers=answers,
-                       add_answer_form=add_answer_form))
+                       add_answer_form=add_answer_form,
+                       corr_answer=corr_answer))
 
 
 def process_vote(obj, request):
@@ -181,3 +184,12 @@ def question_votes(request, question_id):
 def answer_votes(request, answer_id):
     answer = get_object_or_404(Answer, pk=answer_id)
     return process_vote(answer, request)
+
+
+@login_required
+def select_answer(request, answer_id):
+    answer = get_object_or_404(Answer, pk=answer_id)
+    if request.method == 'POST' and request.user == answer.question.author:
+        answer.is_correct = json.loads(request.POST['is_correct'])
+        answer.save(update_fields=["is_correct"])
+    return HttpResponse('Ok')

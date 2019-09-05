@@ -41,3 +41,21 @@ function vote_handler(vote_url, id, reqType, voteType) {
         });
     }
 }
+
+function mark_answer(_url, id) {
+    return function () {
+        $.ajax({
+            url: _url,
+            type: "POST",
+            data: {
+                is_correct: true,
+                csrfmiddlewaretoken: getCookie('csrftoken'),
+            },
+            dataType: 'html',
+            success: function() {
+                // this reload is needed to remove mark widgets if some answer was choisen
+                location.reload();
+            }
+        });        
+    }
+}
