@@ -7,9 +7,11 @@
 - [x] Fix login required for doing GET to votes
 - [x] Add asked time ago
 - [x] Add paging to question view
-- [ ] Add Vote and Asnwer counters to index
-- [ ] Add double sorting and paging to index
-- [ ] Add email notifications of new answers
+- [x] Add Vote and Asnwer counters to index
+- [x] Add double sorting and paging to index
+- [x] Add email notifications of new answers
+- [x] Add correct asnwer mark
 - [ ] Handle tags
 - [ ] Add search functional
 - [ ] Add sidebar
+- [ ] Check email notifications

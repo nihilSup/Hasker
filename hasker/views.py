@@ -152,8 +152,8 @@ def question(request, question_id):
 
 
 def process_vote(obj, request):
-    user_ups = obj.up_votes.filter(id=request.user.id).count()
-    user_downs = obj.down_votes.filter(id=request.user.id).count()
+    user_ups = obj.user_ups(request.user)
+    user_downs = obj.user_downs(request.user)
     if request.method == 'POST' and request.user.is_authenticated:
         if request.POST['vote_type'] == 'up':
             if user_ups == 0 and user_downs == 0:

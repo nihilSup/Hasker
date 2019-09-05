@@ -32,6 +32,12 @@ class Votable(models.Model):
                                         related_name='%(class)s_down')
     votes = models.IntegerField(default=0)
 
+    def user_ups(self, user):
+        return self.up_votes.filter(id=user.id).count()
+
+    def user_downs(self, user):
+        return self.down_votes.filter(id=user.id).count()
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         # smells, another solution with calc field denies order by

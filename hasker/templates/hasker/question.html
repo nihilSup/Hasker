@@ -12,7 +12,7 @@
                     <h5 class="card-title"><a href="#">{{ question.title }}</a></h5>
                     <div class="d-flex">
                         {% url 'question_votes' question.id as vote_url %}
-                        {% include "hasker/_vote.html" with vote_url=vote_url obj_id="question" init_votes=question.votes %}
+                        {% include "hasker/_vote.html" with vote_url=vote_url obj_id="question" obj=question %}
                         <p class="card-text ml-2">
                             {{ question.content }}
                         </p>
@@ -46,7 +46,7 @@
                             <div class="p-0 mr-2">
                                 
                                 {% url 'answer_votes' answer.id as vote_url %}
-                                {% include "hasker/_vote.html" with vote_url=vote_url obj_id=answer.qual_name init_votes=answer.votes %}
+                                {% include "hasker/_vote.html" with vote_url=vote_url obj_id=answer.qual_name obj=answer %}
                                 
                                 {% if answer.is_correct %}
                                     <div class="btn btn-outline mt-1">

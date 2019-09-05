@@ -1,3 +1,5 @@
+{% load hasker_tags %}
+
 <div class="vote-block p-0 mr-2" id="{{ obj_id }}">
     {% if user.is_authenticated %}
         <button class="btn btn-secondary vote-up">
@@ -5,7 +7,7 @@
         </button>
     {% endif %}
     <div class="votes-count mx-auto">
-        {{init_votes}}
+        {{ obj.votes }}
     </div>
     {% if user.is_authenticated %}
         <button class="btn btn-secondary vote-down">
@@ -22,6 +24,6 @@ $(document).ready(function() {
     vote_url = "{{ vote_url }}";
     $(objId + ' button.vote-up').click(vote_handler(vote_url, objId, 'POST', 'up'));
     $(objId + ' button.vote-down').click(vote_handler(vote_url, objId, 'POST', 'down'));
-    vote_handler(vote_url, objId, 'GET')();
+    vote_updater(objId)('{{obj|as_votes_json:user|safe}}');
 });
 </script>
