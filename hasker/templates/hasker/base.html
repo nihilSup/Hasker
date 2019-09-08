@@ -24,8 +24,9 @@
     {% block header_block %}
     <nav class="navbar navbar-dark bg-dark navbar-expand-sm shadow">
         <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{% url 'index' %}">Hasker</a>
-        <form class="form-inline">
-            <input class="form-control form-control-dark mr-sm-2" type="text" placeholder="Search">
+        <form class="form-inline" method="get" action="{% url 'search' %}">
+            <input class="form-control form-control-dark mr-sm-2" type="text" placeholder="Search" 
+                   name="search_query">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
         <ul class="navbar-nav px-3 ml-auto">

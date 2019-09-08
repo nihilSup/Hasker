@@ -5,7 +5,6 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
-from django.db.models import Count
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -195,3 +194,13 @@ def select_answer(request, answer_id):
         answer.is_correct = json.loads(request.POST['is_correct'])
         answer.save(update_fields=["is_correct"])
     return HttpResponse('Ok')
+
+
+def search(request):
+    query = request.GET.get('search_query')
+    questions = Question.search(query).order_by('-asked_date')
+    paginator = Paginator(questions, 4)
+    page = request.GET.get('page')
+    questions = paginator.get_page(page)
+    return render(request, 'hasker/search.html', dict(questions=questions,
+                                                      search_query=query))

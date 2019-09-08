@@ -1,0 +1,29 @@
+{% extends 'hasker/base.html' %}
+
+{% load staticfiles %}
+
+{% load hasker_tags %}
+
+{% block title_block %}
+    Hasker: search results
+{% endblock title_block %}
+
+{% block content %}
+    <h2 class="mb-2 mt-2">Search results</h2>
+    <br>
+    {% if questions %}
+
+        {% include "hasker/_show_questions.html" with questions=questions %}
+
+        {% if search_query %}
+            {% with "&search_query="|addstr:search_query as addon %}
+                {% include "hasker/_pager.html" with paged_obj=questions query_addon=addon %}
+            {% endwith %}
+        {% else %}
+            {% include "hasker/_pager.html" with paged_obj=questions %}
+        {% endif %}
+
+    {% else %}
+        There are no questions =(
+    {% endif %}
+{% endblock content %}

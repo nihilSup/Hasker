@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models import Q
 from django.utils import timezone
 
 
@@ -51,6 +52,15 @@ class Question(Votable):
     author = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     asked_date = models.DateTimeField(default=timezone.now)
     tags = models.ManyToManyField(Tag)
+
+    @classmethod
+    def search(cls, query):
+        if query is not None:
+            matched_qs = cls.objects.filter(Q(title__icontains=query) |
+                                            Q(content__icontains=query))
+        else:
+            matched_qs = cls.objects.all()
+        return matched_qs
 
     def __str__(self):
         return self.title

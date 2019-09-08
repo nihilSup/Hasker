@@ -67,9 +67,9 @@
         </div>
         {% endfor %}
         {% if sortedby == '-votes' %}
-            {% include "hasker/_pager.html" with paged_obj=questions query_addon='&sortby=-votes'%}
+            {% include "hasker/_pager.html" with paged_obj=questions query_addon='&sortby=-votes' %}
         {% else %}
-            {% include "hasker/_pager.html" with paged_obj=questions%}
+            {% include "hasker/_pager.html" with paged_obj=questions %}
         {% endif %}
     {% else %}
         There are no questions =(

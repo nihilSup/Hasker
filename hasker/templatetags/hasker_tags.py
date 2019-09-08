@@ -12,3 +12,8 @@ def as_votes_json(votable, user):
         user_downs=votable.user_downs(user),
         votes=(votable.votes)
     ))
+
+
+@register.filter
+def addstr(arg1, arg2):
+    return str(arg1) + str(arg2)
