@@ -23,49 +23,9 @@
         </li>
     </ul>
     {% if questions %}
-        {% for question in questions %}
-        <div class="card mb-3" style="max-width: 540px;">
-            <div class="row no-gutters">
-                <div class="col-md-12">
-                    <div class="card-body">
-                        <h5 class="card-title"><a href="{% url 'question' question.id %}">{{ question.title }}</a></h5>
-                        <div class="d-flex mt-2">
-                            <div class="p-0 mr-2">
-                                <div>{{ question.answer_set.all|length }}</div>
-                                <small>Answers</small>
-                            </div>
-                            <div class="p-0 mr-2">
-                                <div>{{ question.votes }}</div>
-                                <small>Votes</small>
-                            </div>
-                            {% for tag in question.tags.all %}
-                                <div class="p-0 mr-2">
-                                    <span class="badge badge-dark">{{ tag.name }}</span>
-                                </div>
-                            {% endfor %}
-                            <div class="ml-auto">
-                                <div class="p-0 mr-2 ml-auto">
-                                    {% if question.author.avatar %}
-                                        <img src="{{ question.author.avatar.url }}"
-                                            width="40" height="40" class="img-thumbnail"/>
-                                    {% else %}
-                                        <img src={% static "hasker/images/default.png" %} 
-                                            width="40" height="40" class="img-thumbnail"/>
-                                    {% endif %}
-                                    {{ question.author.username }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex mt-2">
-                            <p class="p-0 mt-2 ml-auto card-text">
-                                <small class="text-muted">asked {{ question.asked_date|timesince }} ago</small>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
+        
+        {% include "hasker/_show_questions.html" with questions=questions %}
+
         {% if sortedby == '-votes' %}
             {% include "hasker/_pager.html" with paged_obj=questions query_addon='&sortby=-votes' %}
         {% else %}
