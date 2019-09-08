@@ -105,7 +105,7 @@ def ask(request):
             q_model.asked_date = timezone.now()
             q_model.save()
             # TODO: should I move code below to Tag model?
-            for tag_name in re.split('\W+', q_form.cleaned_data['tags']):
+            for tag_name in q_form.cleaned_data['tags']:
                 tag = Tag.objects.filter(name=tag_name).first()
                 if tag is None:
                     q_model.tags.create(name=tag_name)

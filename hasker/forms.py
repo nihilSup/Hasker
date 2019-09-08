@@ -1,8 +1,10 @@
-from django import forms
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from django.contrib.auth import get_user_model
+import re
 
-from .models import HaskerUser, Question, Tag, Answer
+from django import forms
+from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+
+from .models import Answer, HaskerUser, Question, Tag
 
 
 class HaskerUserCreationForm(UserCreationForm):
@@ -48,12 +50,41 @@ class UserProfileForm(forms.ModelForm):
         self.fields['username'].widget.attrs['readonly'] = True
 
 
+class TagsField(forms.CharField):
+    def __init__(self, *args, max_tag_len=10, max_tag_count=3, **kwargs):
+        self.max_tag_len = max_tag_len
+        self.max_tag_count = max_tag_count
+        super().__init__(*args, **kwargs)
+
+    def to_python(self, value):
+        value = super().to_python(value)
+        return re.split('\W+', value)
+
+    def validate(self, value):
+        if len(value) > self.max_tag_count:
+            raise forms.ValidationError(
+                f'More then {self.max_tag_count} tags provided',
+                code='invalid',
+            )
+        for tag_name in value:
+            super().validate(tag_name)
+            if len(tag_name) > self.max_tag_len:
+                raise forms.ValidationError(
+                    'Tag %(name)s... is longer then %(length)s',
+                    code='invalid',
+                    params={
+                        'name': tag_name[:self.max_tag_len],
+                        'length': self.max_tag_len,
+                    },
+                )
+
+
 class QuestionForm(BootsModelForm):
+    tags = TagsField()
+
     class Meta:
         model = Question
         fields = ('title', 'content', 'tags')
-
-    tags = forms.CharField(max_length=128)
 
 
 class AnswerForm(BootsModelForm):

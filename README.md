@@ -20,3 +20,4 @@
 - [ ] Implement tests
 - [ ] Migrate to postgresql
 - [ ] Add docker, uWSGI, make from github
+- [ ] Add tags autocomplit
