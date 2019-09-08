@@ -1,18 +1,18 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.contrib import auth
-from django.urls import reverse
-from django.contrib.auth.decorators import login_required
-from django.utils import timezone
-from django.core.paginator import Paginator
-from django.core.mail import send_mail
-from django.db.models import Count
-
 import json
 import re
 
-from .forms import (UserForm, UserProfileForm, QuestionForm, AnswerForm)
-from .models import Question, Answer, Tag
+from django.contrib import auth
+from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
+from django.core.paginator import Paginator
+from django.db.models import Count
+from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
+from django.utils import timezone
+
+from .forms import AnswerForm, QuestionForm, UserForm, UserProfileForm
+from .models import Answer, Question, Tag
 
 
 def index(request):

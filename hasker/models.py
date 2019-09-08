@@ -1,7 +1,7 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth import get_user_model
 
 
 class HaskerUser(AbstractUser):
@@ -23,14 +23,14 @@ class Tag(models.Model):
 
 
 class Votable(models.Model):
-    class Meta:
-        abstract = True
-
     up_votes = models.ManyToManyField(UserModel, blank=True,
                                       related_name='%(class)s_up')
     down_votes = models.ManyToManyField(UserModel, blank=True,
                                         related_name='%(class)s_down')
     votes = models.IntegerField(default=0)
+
+    class Meta:
+        abstract = True
 
     def user_ups(self, user):
         return self.up_votes.filter(id=user.id).count()
