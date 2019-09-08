@@ -9,9 +9,10 @@ from django.core.mail import send_mail
 from django.db.models import Count
 
 import json
+import re
 
 from .forms import (UserForm, UserProfileForm, QuestionForm, AnswerForm)
-from .models import Question, Answer
+from .models import Question, Answer, Tag
 
 
 def index(request):
@@ -103,7 +104,13 @@ def ask(request):
             q_model.author = request.user
             q_model.asked_date = timezone.now()
             q_model.save()
-            q_form.save_m2m()
+            # TODO: should I move code below to Tag model?
+            for tag_name in re.split('\W+', q_form.cleaned_data['tags']):
+                tag = Tag.objects.filter(name=tag_name).first()
+                if tag is None:
+                    q_model.tags.create(name=tag_name)
+                else:
+                    q_model.tags.add(tag)
             return redirect('question', question_id=q_model.id)
         else:
             print(q_form.errors)

@@ -11,8 +11,22 @@
 
     {% csrf_token %}
 
-    {% include "hasker/_profile_form.html" with card_header="Question" button_name='Ask!' form_data=q_form only%}
-
+    {% for field in q_form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}" class="">
+                {{field.label_tag}}
+            </label>
+            <div class="">
+                {{ field }}
+            </div>
+            {% if field.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ field.errors }}
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+        <input type="submit" name="submit" value="Ask question" class="btn btn-primary btn-block col-2">
 </form>
 
 {% endblock content %}

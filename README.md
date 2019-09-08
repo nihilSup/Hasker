@@ -11,7 +11,12 @@
 - [x] Add double sorting and paging to index
 - [x] Add email notifications of new answers
 - [x] Add correct asnwer mark
-- [ ] Handle tags
+- [x] Handle tags
 - [ ] Add search functional
 - [ ] Add sidebar
 - [ ] Check email notifications
+- [ ] Rewrite password validation by using forms clean
+- [ ] Add messages to creating questions and adding answers. Also add messages when something can't be done
+- [ ] Implement tests
+- [ ] Migrate to postgresql
+- [ ] Add docker, uWSGI, make from github

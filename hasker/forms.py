@@ -53,14 +53,7 @@ class QuestionForm(BootsModelForm):
         model = Question
         fields = ('title', 'content', 'tags')
 
-    tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all())
-
-    def __init__(self, *args, **kwargs):
-        if kwargs.get('instance'):
-            initial = kwargs.setdefault('initial', {})
-            initial['tags'] = [
-                tag.pk for tag in kwargs['instance'].tag_set.all()]
-        super().__init__(*args, **kwargs)
+    tags = forms.CharField(max_length=128)
 
 
 class AnswerForm(BootsModelForm):
