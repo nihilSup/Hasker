@@ -2,6 +2,8 @@ import json
 
 from django import template
 
+from ..models import Question
+
 register = template.Library()
 
 
@@ -17,3 +19,8 @@ def as_votes_json(votable, user):
 @register.filter
 def addstr(arg1, arg2):
     return str(arg1) + str(arg2)
+
+
+@register.inclusion_tag('hasker/_top_questions.html')
+def top_questions(n=20):
+    return dict(top_questions=Question.objects.all().order_by('-votes')[:n])

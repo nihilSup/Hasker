@@ -2,6 +2,8 @@
 
 {% load staticfiles %}
 
+{% load hasker_tags %}
+
 <html lang="en">
 <head>
     {% block head %}
@@ -84,7 +86,7 @@
                 {% endblock content %}
             </div>
             {% block sidebar_block %}
-            <div class="ml-auto mt-2">
+            <div class="ml-auto col-md-3 mt-2">
                 {% if user.is_authenticated %}
                 <div class="sidebar-heading">
                     <a class="btn btn-primary btn-block" href="{% url 'ask' %}">
@@ -92,8 +94,8 @@
                     </a>
                 </div>
                 {% endif %}
-                <div class="list-group mt-1">
-                    <a href="#" class="list-group-item list-group-item-action">Dashboard</a>
+                <div class="list-group mt-2">
+                    {% top_questions 20 %}
                 </div>
             </div>
             {% endblock sidebar_block %}
