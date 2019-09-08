@@ -12,7 +12,7 @@
 - [x] Add email notifications of new answers
 - [x] Add correct asnwer mark
 - [x] Handle tags
-- [ ] Add search functional
+- [x] Add search functional
 - [ ] Add sidebar
 - [ ] Check email notifications
 - [x] Rewrite password validation by using forms clean
