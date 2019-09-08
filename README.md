@@ -15,9 +15,10 @@
 - [ ] Add search functional
 - [ ] Add sidebar
 - [ ] Check email notifications
-- [ ] Rewrite password validation by using forms clean
+- [x] Rewrite password validation by using forms clean
 - [ ] Add messages to creating questions and adding answers. Also add messages when something can't be done
 - [ ] Implement tests
 - [ ] Migrate to postgresql
 - [ ] Add docker, uWSGI, make from github
 - [ ] Add tags autocomplit
+- [ ] Refactor admin creation form and userform

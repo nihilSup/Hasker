@@ -39,6 +39,12 @@ class UserForm(BootsModelForm):
         model = get_user_model()
         fields = ('username', 'password', 'password_re', 'email', 'avatar')
 
+    def clean(self):
+        cleaned_data = super().clean()
+        if(cleaned_data['password'] != cleaned_data['password_re']):
+            self.add_error('password', 'Passwords do not match')
+            self.add_error('password_re', 'Passwords do not match')
+
 
 class UserProfileForm(forms.ModelForm):
     class Meta:

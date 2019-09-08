@@ -58,18 +58,13 @@ def signup(request):
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
         if user_form.is_valid():
-            if(user_form.cleaned_data['password'] !=
-               user_form.cleaned_data['password_re']):
-                user_form.add_error('password', 'Passwords do not match')
-                print(user_form.errors)
-            else:
-                user = user_form.save()
-                # to hash the password
-                user.set_password(user.password)
-                if 'avatar' in request.FILES:
-                    user.avatar = request.FILES['avatar']
-                user.save()
-                registered = True
+            user = user_form.save()
+            # to hash the password
+            user.set_password(user.password)
+            if 'avatar' in request.FILES:
+                user.avatar = request.FILES['avatar']
+            user.save()
+            registered = True
         else:
             print(user_form.errors)
     else:
