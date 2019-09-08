@@ -17,7 +17,9 @@
                         </div>
                         {% for tag in question.tags.all %}
                             <div class="p-0 mr-2">
-                                <span class="badge badge-dark">{{ tag.name }}</span>
+                                <a class="badge badge-dark" href="{% url 'search' %}?search_query=tag:{{ tag.name }}">
+                                    {{ tag.name }}
+                                </a>
                             </div>
                         {% endfor %}
                         <div class="ml-auto">
