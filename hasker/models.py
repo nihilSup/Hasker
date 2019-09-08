@@ -1,3 +1,5 @@
+import re
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -56,8 +58,13 @@ class Question(Votable):
     @classmethod
     def search(cls, query):
         if query is not None:
-            matched_qs = cls.objects.filter(Q(title__icontains=query) |
-                                            Q(content__icontains=query))
+            match = re.match('tag:(\w+)$', query)
+            if match:
+                tag_name = match[1]
+                matched_qs = cls.objects.filter(tags__name=tag_name)
+            else:
+                matched_qs = cls.objects.filter(Q(title__icontains=query) |
+                                                Q(content__icontains=query))
         else:
             matched_qs = cls.objects.all()
         return matched_qs
