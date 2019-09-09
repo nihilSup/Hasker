@@ -13,12 +13,14 @@
 - [x] Add correct asnwer mark
 - [x] Handle tags
 - [x] Add search functional
-- [ ] Add sidebar
+- [x] Add sidebar
 - [ ] Check email notifications
 - [x] Rewrite password validation by using forms clean
 - [ ] Add messages to creating questions and adding answers. Also add messages when something can't be done
-- [ ] Implement tests
+- [x] Implement tests
 - [ ] Migrate to postgresql
 - [ ] Add docker, uWSGI, make from github
 - [ ] Add tags autocomplit
 - [ ] Refactor admin creation form and userform
+- [ ] Implement REST API
+- [ ] Add proper logging
