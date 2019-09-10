@@ -22,7 +22,7 @@ services:
     volumes:
         - static_volume:/opt/hasker_proj/staticfiles
         - media_volume:/opt/hasker_proj/media
-        - ./log:/var/log/nginx
+        - ./logs:/var/log/nginx
     ports:
       - 1337:80
     depends_on:
