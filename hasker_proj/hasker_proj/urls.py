@@ -25,5 +25,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^$', views.index, name='index'),
     url(r'^hasker/', include('hasker.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + \
-static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] 
+
+if bool(settings.DEBUG):
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
