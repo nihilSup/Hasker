@@ -48,7 +48,8 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
-            python hasker_proj/manage.py test
+            cd ./hasker_proj
+            python manage.py test
 
       - store_artifacts:
           path: test-reports
