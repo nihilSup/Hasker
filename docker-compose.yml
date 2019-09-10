@@ -10,9 +10,15 @@ services:
     command: uwsgi --ini /opt/hasker_proj/uwsgi.ini
     volumes:
       - ./hasker_proj:/opt/hasker_proj
-    ports:
-      - "8000:8000"
+    expose:
+    - 8000
     depends_on:
       - db
+  nginx:
+    build: ./nginx
+    ports:
+      - 1337:80
+    depends_on:
+      - web
 volumes:
   postgres_data:
