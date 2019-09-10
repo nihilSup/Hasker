@@ -6,9 +6,9 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
   web:
-    build: .
+    build: ./hasker_proj
     volumes:
-      - .:/opt/hasker_proj
+      - ./hasker_proj:/opt/hasker_proj
     ports:
       - "8000:8000"
     depends_on:
