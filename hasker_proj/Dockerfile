@@ -6,4 +6,4 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 COPY . /opt/hasker_proj/
 WORKDIR /opt/hasker_proj
 RUN pip install -r requirements.txt
-CMD ["uwsgi", "--ini", "/opt/hasker_proj/uwsgi.ini"]
+ENTRYPOINT [ "/opt/hasker_proj/entrypoint.sh" ]
