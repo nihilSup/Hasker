@@ -29,6 +29,7 @@ def index(request):
 
 
 def login(request):
+    error = None
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -38,14 +39,14 @@ def login(request):
         if user:
             if user.is_active:
                 auth.login(request, user)
-                return HttpResponseRedirect(reverse('index'))
+                return redirect('index')
             else:
-                return HttpResponse('Account is disabled.')
+                logger.info('User deactivated')
+                error = 'User deactivated'
         else:
-            logger.info('Invalid login/pass'.format(username, password))
-            return HttpResponse('Invalid login/pass')
-    else:
-        return render(request, 'hasker/login.html')
+            logger.info('Invalid login/pass')
+            error = 'Invalid login/pass'
+    return render(request, 'hasker/login.html', dict(error=error))
 
 
 @login_required
