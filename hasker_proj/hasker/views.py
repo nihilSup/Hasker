@@ -1,5 +1,7 @@
 import json
 import re
+import logging
+logger = logging.getLogger(__name__)
 
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
@@ -40,7 +42,7 @@ def login(request):
             else:
                 return HttpResponse('Account is disabled.')
         else:
-            print('Invalid login/pass'.format(username, password))
+            logger.info('Invalid login/pass'.format(username, password))
             return HttpResponse('Invalid login/pass')
     else:
         return render(request, 'hasker/login.html')
@@ -65,7 +67,7 @@ def signup(request):
             user.save()
             registered = True
         else:
-            print(user_form.errors)
+            logger.info(user_form.errors)
     else:
         # provide empty fields for new user registration
         user_form = UserForm()
@@ -82,7 +84,7 @@ def profile(request):
         if profile_form.is_valid():
             user_model = profile_form.save()
         else:
-            print(profile_form.errors)
+            logger.info(profile_form.errors)
     else:
         profile_form = UserProfileForm(instance=request.user)
     return render(request, 'hasker/profile.html',
@@ -107,7 +109,7 @@ def ask(request):
                     q_model.tags.add(tag)
             return redirect('question', question_id=q_model.id)
         else:
-            print(q_form.errors)
+            logger.info(q_form.errors)
     else:
         q_form = QuestionForm()
     return render(request, 'hasker/ask.html',
@@ -134,7 +136,7 @@ def question(request, question_id):
                 fail_silently=True,
             )
         else:
-            print(add_answer_form.errors)
+            logger.info(add_answer_form.errors)
     else:
         add_answer_form = AnswerForm()
     answers = (

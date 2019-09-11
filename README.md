@@ -74,9 +74,9 @@ postgresql -
 - [ ] Add messages to creating questions and adding answers. Also add messages when something can't be done
 - [x] Implement tests
 - [x] Migrate to postgresql
-- [ ] Add docker, uWSGI, make from github
+- [x] Add docker, uWSGI, make from github
 - [ ] Add tags autocomplit
 - [ ] Refactor admin creation form and userform
 - [ ] Implement REST API
-- [ ] Add proper logging
+- [ ] Add logging
 - [ ] Change profile view - add preview of current avatar
