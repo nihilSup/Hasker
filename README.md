@@ -2,15 +2,16 @@
 
 ## How to use
 
+To deploy app use
+
 ```shell
 cd Hasker
-docker-compose up --build
+docker-compose up --build -V
 ```
 
 !!! For prod environment you have to set DJANGO_SECRET_KEY !!!
 
 This will deploy all stack on port 8000. One can use `shell docker build . -t web` to launch only django with uWSGI. But it ups to you to configure db.
-
 
 There are several ENV vars to control the config:
 
@@ -21,14 +22,20 @@ There are several ENV vars to control the config:
 
 To set them use docker flags or add .env file to the root folder (among docker-compose.yml)
 
+There are several convience things in entrypoint of django uWSGI docker:
+
+- db flush
+- db load from fixture
+- collect static
+
 ## Architecture
 
 web client <-> nginx <-> uWSGI <-> django app <-> postgresql
 
 nginx -
 
-- reverse proxy from port 80 to port 8000 of uWSGI
-- serves static and media (need to ```python manage.py collectstatic```)
+- reverse proxy from port 8000 to internal 80 and then to port 8000 of uWSGI docker
+- serves static and media in prod (need to `python manage.py collectstatic`)
 
 uWSGI -
 
@@ -66,7 +73,7 @@ postgresql -
 - [x] Handle tags
 - [x] Add search functional
 - [x] Add sidebar
-- [ ] Check email notifications
+- [x] Check email notifications
 - [x] Rewrite password validation by using forms clean
 - [ ] Add messages to creating questions and adding answers. Also add messages when something can't be done
 - [x] Implement tests
@@ -75,5 +82,5 @@ postgresql -
 - [ ] Add tags autocomplit
 - [ ] Refactor admin creation form and userform
 - [ ] Implement REST API
-- [ ] Add logging
+- [x] Add logging
 - [ ] Change profile view - add preview of current avatar
