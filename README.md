@@ -18,16 +18,17 @@ There are several ENV vars to control the config:
 
 - DJANGO_ENV tells to use prod or debug for django (e.g. static and media files will be handled differently)
 - DJANGO_DB can be postgresql or SQLite. Anyway web Dockerfile entrypoint will load basic data to db.
-- UWSGI_PORT describes port to start uWSGI server
 - DJANGO_SECRET_KEY used for csrf protection. **Must be set** in production
 
-To set them use docker flags or add .env file to the root folder (among docker-compose.yml)
+To set them provide .env file in the root folder (among docker-compose.yml)
 
 There are several convience things in entrypoint of django uWSGI docker:
 
 - db flush
 - db load from fixture
 - collect static
+
+Feel free to remove them (except collect static)
 
 ## Architecture
 
@@ -54,11 +55,11 @@ postgresql -
 
 ### Usefull links
 
-<https://www.eidel.io/2017/07/10/dockerizing-django-uwsgi-postgres/>
-<https://github.com/twtrubiks/docker-django-nginx-uwsgi-postgres-tutorial>
-<https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html>
-<http://pawamoy.github.io/2018/02/01/docker-compose-django-postgres-nginx.html>
-<https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/>
+- <https://www.eidel.io/2017/07/10/dockerizing-django-uwsgi-postgres/>
+- <https://github.com/twtrubiks/docker-django-nginx-uwsgi-postgres-tutorial>
+- <https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html>
+- <http://pawamoy.github.io/2018/02/01/docker-compose-django-postgres-nginx.html>
+- <https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/>
 
 ## TODO
 
