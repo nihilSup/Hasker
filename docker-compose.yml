@@ -23,7 +23,7 @@ services:
         - media_volume:/opt/hasker_proj/media
         - ./logs:/var/log/nginx
     ports:
-      - 1337:80
+      - 8000:80
     depends_on:
       - web
 volumes:
