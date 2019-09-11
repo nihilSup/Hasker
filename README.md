@@ -1,5 +1,25 @@
 # Hasker - stackoverflow core functionality
 
+## How to use
+
+```shell
+docker-compose up --build
+```
+
+This will deploy all stack and also web app on port 8000. One can use
+
+```shell
+docker build . -t web
+```
+
+There are several ENV vars to control the config:
+
+- DJANGO_ENV tells to use prod or debug for django (e.g. static and media files will be handled differently)
+- DJANGO_DB can be postgresql or SQLite. Anyway web Dockerfile entrypoint will load basic data to db.
+- UWSGI_PORT describes port to start uWSGI server
+
+To set them use docker flags or add .env file to the root folder (among docker-compose.yml)
+
 ## Architecture
 
 web client <-> nginx <-> uWSGI <-> django app <-> postgresql
@@ -7,7 +27,7 @@ web client <-> nginx <-> uWSGI <-> django app <-> postgresql
 nginx -
 
 - reverse proxy from port 80 to port 8000 of uWSGI
-- serves static and media (need to python manage.py collectstatic)
+- serves static and media (need to ```python manage.py collectstatic```)
 
 uWSGI -
 
