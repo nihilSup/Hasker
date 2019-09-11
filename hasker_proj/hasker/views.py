@@ -5,6 +5,7 @@ logger = logging.getLogger(__name__)
 
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.http import Http404, HttpResponse, HttpResponseRedirect
@@ -128,11 +129,11 @@ def question(request, question_id):
             answer_model.answered_date = timezone.now()
             answer_model.is_correct = False
             answer_model.save()
-            link = reverse("question", args=[question_id])
+            link = request.build_absolute_uri()
             send_mail(
                 'You have a new answer!',
                 f'Hi, check new answer to {link}',
-                'helper@hasker.com',
+                settings.EMAIL_HOST_USER,
                 [question.author.email],
                 fail_silently=True,
             )
