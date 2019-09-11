@@ -3,10 +3,13 @@
 ## How to use
 
 ```shell
+cd Hasker
 docker-compose up --build
 ```
 
-This will deploy all stack and also web app on port 8000. One can use
+!!! For prod environment you have to set DJANGO_SECRET_KEY !!!
+
+This will deploy all stack on port 8000. One can use
 
 ```shell
 docker build . -t web
@@ -17,6 +20,7 @@ There are several ENV vars to control the config:
 - DJANGO_ENV tells to use prod or debug for django (e.g. static and media files will be handled differently)
 - DJANGO_DB can be postgresql or SQLite. Anyway web Dockerfile entrypoint will load basic data to db.
 - UWSGI_PORT describes port to start uWSGI server
+- DJANGO_SECRET_KEY used for csrf protection. **Must be set** in production
 
 To set them use docker flags or add .env file to the root folder (among docker-compose.yml)
 

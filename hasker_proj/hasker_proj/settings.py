@@ -11,9 +11,18 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 from django.urls import reverse_lazy
+from django.core.exceptions import ImproperlyConfigured
 
 import os
 
+
+def get_env_variable(var_name):
+    """Get the environment variable or return exception."""
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        error_msg = 'Set the {} environment variable'.format(var_name)
+        raise ImproperlyConfigured(error_msg)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,7 +32,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '&q2@4%v$6^5po@xnh+c4g62oqsan3jwoitj+)k573!(lje3i8p')
+if os.getenv('DJANGO_ENV') == 'prod':
+    SECRET_KEY = get_env_variable('DJANGO_SECRET_KEY', )
+else:
+    SECRET_KEY = '&q2@4%v$6^5po@xnh+c4g62oqsan3jwoitj+)k573!(lje3i8p'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if os.getenv('DJANGO_ENV') == 'prod':

@@ -5,4 +5,3 @@ db.sqlite3
 *.vscode
 *.png
 hasker_proj/staticfiles
-.env
