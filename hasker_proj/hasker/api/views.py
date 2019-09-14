@@ -9,19 +9,34 @@ class QuestionViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
 
+    def paged_response(self, objs):
+        page = self.paginate_queryset(objs)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        else:
+            serializer = self.get_serializer(objs, many=True)
+            return Response(serializer.data)
+
     @action(detail=False)
     def search(self, request):
         query = request.GET.get('search_query')
         questions = Question.search(query)
         
-        page = self.paginate_queryset(questions)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-        else:
-            serializer = self.get_serializer(questions, many=True)
-            return Response(serializer.data)
+        return self.paged_response(questions)
 
+    @action(detail=False)
+    def ordered(self, request):
+        field_name = request.GET.get('sortby')
+        if field_name not in ('-asked_date', '-votes'):
+            field_name = '-asked_date'
+        questions = Question.objects.order_by(field_name)
+
+        return self.paged_response(questions)
+
+    @action(detail=False)
+    def trending(self, request):
+        return self.paged_response(Question.trending())
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Tag.objects.all()

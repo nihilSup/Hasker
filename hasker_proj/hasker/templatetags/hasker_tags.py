@@ -23,4 +23,4 @@ def addstr(arg1, arg2):
 
 @register.inclusion_tag('hasker/_top_questions.html')
 def top_questions(n=20):
-    return dict(top_questions=Question.objects.all().order_by('-votes')[:n])
+    return dict(top_questions=Question.trending(n))

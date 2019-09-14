@@ -69,6 +69,10 @@ class Question(Votable):
             matched_qs = cls.objects.all()
         return matched_qs.order_by('-votes', '-asked_date')
 
+    @classmethod
+    def trending(cls, n=20):
+        return Question.objects.all().order_by('-votes')[:n]
+
     def __str__(self):
         return self.title
 
