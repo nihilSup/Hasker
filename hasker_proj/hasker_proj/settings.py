@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'hasker',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -177,3 +178,10 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'haskerapp@gmail.com'
 EMAIL_HOST_PASSWORD = 'vubzob-3kacbi-roCxuq'
+
+
+# REST framework
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}

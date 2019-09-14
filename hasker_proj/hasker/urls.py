@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.urls import path
 
 from hasker import views
@@ -18,4 +18,5 @@ urlpatterns = [
      path(r'answers/<int:answer_id>/votes/', views.answer_votes,
           name='answer_votes'),
      url(r'^search/$', views.search, name='search'),
+     url(r'^api/', include('hasker.api.urls')),
 ]
