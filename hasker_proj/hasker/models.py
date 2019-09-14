@@ -67,7 +67,7 @@ class Question(Votable):
                                                 Q(content__icontains=query))
         else:
             matched_qs = cls.objects.all()
-        return matched_qs
+        return matched_qs.order_by('-votes', '-asked_date')
 
     def __str__(self):
         return self.title

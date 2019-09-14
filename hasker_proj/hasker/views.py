@@ -202,7 +202,7 @@ def select_answer(request, answer_id):
 
 def search(request):
     query = request.GET.get('search_query')
-    questions = Question.search(query).order_by('-votes', '-asked_date')
+    questions = Question.search(query)
     paginator = Paginator(questions, 4)
     page = request.GET.get('page')
     questions = paginator.get_page(page)
