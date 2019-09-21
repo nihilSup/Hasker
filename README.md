@@ -53,6 +53,11 @@ postgresql -
 
 - persistance
 
+## REST API
+
+root: <http://127.0.0.1:8000/hasker/api/>
+Swagger: <http://127.0.0.1:8000/hasker/api/swagger-ui/>
+
 ### Usefull links
 
 - <https://www.eidel.io/2017/07/10/dockerizing-django-uwsgi-postgres/>
@@ -60,6 +65,10 @@ postgresql -
 - <https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html>
 - <http://pawamoy.github.io/2018/02/01/docker-compose-django-postgres-nginx.html>
 - <https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/>
+
+#### Rest API links
+
+- <https://www.django-rest-framework.org>
 
 ## TODO
 
@@ -83,6 +92,6 @@ postgresql -
 - [x] Add docker, uWSGI, make from github
 - [ ] Add tags autocomplit
 - [ ] Refactor admin creation form and userform
-- [ ] Implement REST API
+- [x] Implement REST API
 - [x] Add logging
 - [ ] Change profile view - add preview of current avatar
