@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
-from .models import Question
-from .forms import UserForm, QuestionForm
+from ..models import Question
+from ..forms import UserForm, QuestionForm
 
 
 class TestVotable(TestCase):

@@ -2,6 +2,6 @@ Django>=2.0,<3.0
 psycopg2>=2.7,<3.0
 Pillow>=4.2.1
 uwsgi
-djangorestframework=3.10.3
-pyyaml=5.1.2
-uritemplate=3.0.0
+djangorestframework==3.10.3
+pyyaml==5.1.2
+uritemplate==3.0.0
