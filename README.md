@@ -12,7 +12,7 @@ docker-compose up --build -V
 app will be available on localhost:8000/hasker/
 !!! For prod environment you have to set DJANGO_SECRET_KEY !!!
 
-This will deploy all stack on port 8000. One can use `shell docker build . -t web` to launch only django with uWSGI. But it ups to you to configure db.
+This will deploy all stack on port 8000. One can use `shell docker build . -t web` to launch only django with uWSGI. But it is up to you to configure db.
 
 There are several ENV vars to control the config:
 
