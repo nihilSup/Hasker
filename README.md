@@ -16,9 +16,9 @@ This will deploy all stack on port 8000. One can use `shell docker build . -t we
 
 There are several ENV vars to control the config:
 
-- DJANGO_ENV tells to use prod or debug for django (e.g. static and media files will be handled differently)
-- DJANGO_DB can be postgresql or SQLite. Anyway web Dockerfile entrypoint will load basic data to db.
+- DJANGO_SETTINGS_MODULE module name with django settings. Currently there is settings package in hasker_proj dir. It contains base.py, local.py and prod.py. Each one contains settings specific to desired environment(e.g. static and media files will be handled differently, same true for secret key and db settings)
 - DJANGO_SECRET_KEY used for csrf protection. **Must be set** in production
+- EMAIL_USER and EMAIL_PASS will be used to send emails
 
 To set them provide .env file in the root folder (among docker-compose.yml)
 
