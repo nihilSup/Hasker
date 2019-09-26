@@ -2,23 +2,8 @@ import re
 
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 
-from .models import Answer, HaskerUser, Question, Tag
-
-
-class HaskerUserCreationForm(UserCreationForm):
-
-    class Meta(UserCreationForm.Meta):
-        model = get_user_model()
-        fields = UserCreationForm.Meta.fields + ('avatar', )
-
-
-class HaskerUserChangeForm(UserChangeForm):
-
-    class Meta(UserChangeForm.Meta):
-        model = get_user_model()
-        fields = '__all__'
+from ..models import Answer, Question, Tag
 
 
 class BootsModelForm(forms.ModelForm):

@@ -1,21 +1,11 @@
 import re
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
 
-
-class HaskerUser(AbstractUser):
-
-    avatar = models.ImageField(upload_to='profile_images', blank=True)
-
-    def __str__(self):
-        return super().username
-
-
-UserModel = get_user_model()
+_UserModel = get_user_model()
 
 
 class Tag(models.Model):
@@ -26,9 +16,9 @@ class Tag(models.Model):
 
 
 class Votable(models.Model):
-    up_votes = models.ManyToManyField(UserModel, blank=True,
+    up_votes = models.ManyToManyField(_UserModel, blank=True,
                                       related_name='%(class)s_up')
-    down_votes = models.ManyToManyField(UserModel, blank=True,
+    down_votes = models.ManyToManyField(_UserModel, blank=True,
                                         related_name='%(class)s_down')
     votes = models.IntegerField(default=0)
 
@@ -51,7 +41,7 @@ class Votable(models.Model):
 class Question(Votable):
     title = models.CharField(max_length=128)
     content = models.TextField()
-    author = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    author = models.ForeignKey(_UserModel, on_delete=models.CASCADE)
     asked_date = models.DateTimeField(default=timezone.now)
     tags = models.ManyToManyField(Tag)
 
@@ -79,7 +69,7 @@ class Question(Votable):
 
 class Answer(Votable):
     content = models.TextField()
-    author = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    author = models.ForeignKey(_UserModel, on_delete=models.CASCADE)
     answered_date = models.DateTimeField(default=timezone.now)
     is_correct = models.BooleanField(default=False)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
