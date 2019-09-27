@@ -60,6 +60,16 @@ class TestVotable(TestCase):
         self.assertEqual(self.q.user_downs(self.u1), 0)
         self.assertEqual(self.q.user_downs(self.u2), 1)
 
+    def test_handle_votes(self):
+        self.q.handle_new_vote(self.u2, 'up')
+        self.assertEqual(self.q.votes, 1)
+        self.q.handle_new_vote(self.u1, 'up')
+        self.assertEqual(self.q.votes, 1)
+        self.q.handle_new_vote(self.u2, 'down')
+        self.assertEqual(self.q.votes, 0)
+        self.q.handle_new_vote(self.u2, 'up')
+        self.assertEqual(self.q.votes, 1)
+
 
 class TestQuestionSearch(TestCase):
 
