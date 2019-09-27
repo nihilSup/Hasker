@@ -157,26 +157,11 @@ def question(request, question_id):
 
 
 def process_vote(obj, request):
-    user_ups = obj.user_ups(request.user)
-    user_downs = obj.user_downs(request.user)
     if request.method == 'POST' and request.user.is_authenticated:
-        if request.POST['vote_type'] == 'up':
-            if user_ups == 0 and user_downs == 0:
-                obj.up_votes.add(request.user)
-                obj.save()
-            elif user_ups == 0 and user_downs != 0:
-                obj.down_votes.remove(request.user)
-                obj.save()
-        if request.POST['vote_type'] == 'down':
-            if user_ups == 0 and user_downs == 0:
-                obj.down_votes.add(request.user)
-                obj.save()
-            elif user_ups != 0 and user_downs == 0:
-                obj.up_votes.remove(request.user)
-                obj.save()
+        obj.handle_new_vote(request.user, request.POST['vote_type'])
     return HttpResponse(json.dumps(dict(
-        user_ups=obj.up_votes.filter(id=request.user.id).count(),
-        user_downs=obj.down_votes.filter(id=request.user.id).count(),
+        user_ups=obj.user_ups(request.user),
+        user_downs=obj.user_downs(request.user),
         votes=(obj.votes)
     )))
 

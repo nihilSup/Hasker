@@ -1,7 +1,7 @@
 import re
 
 from django.contrib.auth import get_user_model
-from django.db import models
+from django.db import models, transaction
 from django.db.models import Q
 from django.utils import timezone
 
@@ -16,6 +16,7 @@ class Tag(models.Model):
 
 
 class Votable(models.Model):
+    author = models.ForeignKey(_UserModel, on_delete=models.CASCADE)
     up_votes = models.ManyToManyField(_UserModel, blank=True,
                                       related_name='%(class)s_up')
     down_votes = models.ManyToManyField(_UserModel, blank=True,
@@ -37,11 +38,28 @@ class Votable(models.Model):
         self.votes = self.up_votes.count() - self.down_votes.count()
         super().save(update_fields=["votes"])
 
+    @transaction.atomic
+    def handle_new_vote(self, user, vote_type):
+        if self.author == user:
+            return None
+        user_ups = self.user_ups(user)
+        user_downs = self.user_downs(user)
+        if vote_type == 'up':
+            if user_ups == 0 and user_downs == 0:
+                self.up_votes.add(user)
+            elif user_ups == 0 and user_downs != 0:
+                self.down_votes.remove(user)
+        elif vote_type == 'down':
+            if user_ups == 0 and user_downs == 0:
+                self.down_votes.add(user)
+            elif user_ups != 0 and user_downs == 0:
+                self.up_votes.remove(user)
+        self.save() 
+
 
 class Question(Votable):
     title = models.CharField(max_length=128)
     content = models.TextField()
-    author = models.ForeignKey(_UserModel, on_delete=models.CASCADE)
     asked_date = models.DateTimeField(default=timezone.now)
     tags = models.ManyToManyField(Tag)
 
@@ -69,7 +87,6 @@ class Question(Votable):
 
 class Answer(Votable):
     content = models.TextField()
-    author = models.ForeignKey(_UserModel, on_delete=models.CASCADE)
     answered_date = models.DateTimeField(default=timezone.now)
     is_correct = models.BooleanField(default=False)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
