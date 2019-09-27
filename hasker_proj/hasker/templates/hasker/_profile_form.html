@@ -6,10 +6,10 @@
         <div class="card-body">
             {% for field in form_data %}
                 <div class="form-group">
-                    <label for="{{ field.id_for_label }}" class="">
+                    <label for="{{ field.id_for_label }}">
                         {{field.label_tag}}
                     </label>
-                    <div class="">
+                    <div>
                         {{ field }}
                     </div>
                     {% if field.errors %}

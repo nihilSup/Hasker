@@ -13,10 +13,10 @@
 
     {% for field in q_form %}
         <div class="form-group">
-            <label for="{{ field.id_for_label }}" class="">
+            <label for="{{ field.id_for_label }}">
                 {{field.label_tag}}
             </label>
-            <div class="">
+            <div>
                 {{ field }}
             </div>
             {% if field.errors %}

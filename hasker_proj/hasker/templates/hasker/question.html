@@ -47,7 +47,7 @@
                                     </div>
                                 {% elif corr_answer == False and user == question.author%}
                                     <button class="btn btn-outline-dark mt-1" id="{{ answer.qual_name }}">
-                                        <span class="" style="font-size:100%">&star;</span>
+                                        <span style="font-size:100%">&star;</span>
                                     </button>
                                     {% url 'select_answer' answer.id as mark_url %}
                                         <script>
@@ -93,7 +93,7 @@
 
                 {% for field in add_answer_form %}
                     <div class="form-group">
-                        <div class="">
+                        <div>
                             {{ field }}
                         </div>
                         {% if field.errors %}
