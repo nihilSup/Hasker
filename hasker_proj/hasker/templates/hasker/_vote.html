@@ -1,6 +1,8 @@
 {% load hasker_tags %}
 
-<div class="vote-block p-0 mr-2" id="{{ obj_id }}">
+<div class="vote-block p-0 mr-2" id="{{ obj_id }}"
+     dj-vote-url="{{ vote_url }}"
+     dj-init-data='{{ obj|as_votes_json:user|safe }}'>
     {% if user.is_authenticated %}
         <button class="btn btn-secondary vote-up">
             &#9650;
@@ -15,15 +17,3 @@
         </button>
     {% endif %}
 </div>
-
-{% csrf_token %}
-
-<script>
-$(document).ready(function() {
-    objId = "div#{{ obj_id }}";
-    vote_url = "{{ vote_url }}";
-    $(objId + ' button.vote-up').click(vote_handler(vote_url, objId, 'POST', 'up'));
-    $(objId + ' button.vote-down').click(vote_handler(vote_url, objId, 'POST', 'down'));
-    vote_updater(objId)('{{obj|as_votes_json:user|safe}}');
-});
-</script>

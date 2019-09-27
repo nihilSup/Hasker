@@ -46,17 +46,10 @@
                                         <span style="font-size:100%">&starf;</span>
                                     </div>
                                 {% elif corr_answer == False and user == question.author%}
-                                    <button class="btn btn-outline-dark mt-1" id="{{ answer.qual_name }}">
+                                    <button class="btn btn-outline-dark mt-1 mark-answer" id="{{ answer.qual_name }}"
+                                            dj-mark-url="{% url 'select_answer' answer.id %}">
                                         <span style="font-size:100%">&star;</span>
                                     </button>
-                                    {% url 'select_answer' answer.id as mark_url %}
-                                        <script>
-                                            $(document).ready(function() {
-                                                var objId = "button#{{ answer.qual_name }}";
-                                                var mark_url = "{{ mark_url }}";
-                                                $(objId).click(mark_answer(mark_url, objId));
-                                            });
-                                        </script>
                                 {% endif %}
                             </div>
                             <p class="p-0 card-text">
@@ -108,4 +101,7 @@
                 </div>
         </form>
     {% endif %}
+
+<script src={% static 'hasker/js/main.js' %}></script>
+
 {% endblock content %}
