@@ -1,6 +1,5 @@
 {% extends 'hasker/base.html' %}
 {% load staticfiles %}
-{% load hasker_tags %}
 
 {% block title_block %}
     Hasker
@@ -10,7 +9,7 @@
     <ul class="nav nav-tabs mb-3 mt-3">
         <li class="nav-item">
             <h2>
-                <a class="nav-link {{ sortedby|get_active:'-asked_date' }}"
+                <a class="nav-link {% if sortedby == '-asked_date' %}active{% endif %}"
                    href="{% url 'index' %}">
                     New questions
                 </a>
@@ -18,7 +17,7 @@
         </li>
         <li class="nav-item">
             <h2>
-                <a class="nav-link {{ sortedby|get_active:'-votes' }}" 
+                <a class="nav-link {% if sortedby == '-votes' %}active{% endif %}" 
                    href="{% url 'index' %}?sortby=-votes">
                     Hot questions
                 </a>
