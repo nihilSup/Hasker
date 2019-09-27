@@ -12,7 +12,7 @@
 
     {% csrf_token %}
 
-    {% include "hasker/_profile_form.html" with card_header="Profile details" button_name='Save' form_data=profile_form only%}
+    {% include "hasker/include/_profile_form.html" with card_header="Profile details" button_name='Save' form_data=profile_form only%}
 
 </form>
 {% endblock content %}

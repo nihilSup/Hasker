@@ -21,7 +21,7 @@
                                 </h5>
                                 <div class="d-flex">
                                 {% for tag in question.tags.all %}
-                                    {% include "hasker/_tag.html" with tag=tag %}
+                                    {% include "hasker/include/_tag.html" with tag=tag %}
                                 {% endfor %}
                                 </div>
                             </div>

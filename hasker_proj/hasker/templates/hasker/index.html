@@ -26,12 +26,12 @@
     </ul>
     {% if questions %}
         
-        {% include "hasker/_show_questions.html" with questions=questions %}
+        {% include "hasker/include/_show_questions.html" with questions=questions %}
 
         {% if sortedby == '-votes' %}
-            {% include "hasker/_pager.html" with paged_obj=questions query_addon='&sortby=-votes' %}
+            {% include "hasker/include/_pager.html" with paged_obj=questions query_addon='&sortby=-votes' %}
         {% else %}
-            {% include "hasker/_pager.html" with paged_obj=questions %}
+            {% include "hasker/include/_pager.html" with paged_obj=questions %}
         {% endif %}
     {% else %}
         There are no questions =(

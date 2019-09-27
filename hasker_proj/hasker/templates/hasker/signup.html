@@ -15,7 +15,7 @@
 
     {% csrf_token %}
 
-    {% include "hasker/_profile_form.html" with card_header="Profile details" button_name='Sign up!' form_data=user_form only%}
+    {% include "hasker/include/_profile_form.html" with card_header="Profile details" button_name='Sign up!' form_data=user_form only%}
 
 </form>
 

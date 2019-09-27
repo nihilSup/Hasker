@@ -13,14 +13,14 @@
     <br>
     {% if questions %}
 
-        {% include "hasker/_show_questions.html" with questions=questions %}
+        {% include "hasker/include/_show_questions.html" with questions=questions %}
 
         {% if search_query %}
             {% with "&search_query="|addstr:search_query as addon %}
-                {% include "hasker/_pager.html" with paged_obj=questions query_addon=addon %}
+                {% include "hasker/include/_pager.html" with paged_obj=questions query_addon=addon %}
             {% endwith %}
         {% else %}
-            {% include "hasker/_pager.html" with paged_obj=questions %}
+            {% include "hasker/include/_pager.html" with paged_obj=questions %}
         {% endif %}
 
     {% else %}

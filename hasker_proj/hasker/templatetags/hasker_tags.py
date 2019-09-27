@@ -21,6 +21,6 @@ def addstr(arg1, arg2):
     return str(arg1) + str(arg2)
 
 
-@register.inclusion_tag('hasker/_top_questions.html')
+@register.inclusion_tag('hasker/include/_top_questions.html')
 def top_questions(n=20):
     return dict(top_questions=Question.trending(n))
