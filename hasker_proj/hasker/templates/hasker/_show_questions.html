@@ -27,13 +27,8 @@
                             </div>
                             <div class="ml-auto">
                                 <div class="p-0 mr-2 ml-auto">
-                                    {% if question.author.avatar %}
-                                        <img src="{{ question.author.avatar.url }}"
-                                            width="40" height="40" class="img-thumbnail"/>
-                                    {% else %}
-                                        <img src={% static "hasker/images/default.png" %} 
-                                            width="40" height="40" class="img-thumbnail"/>
-                                    {% endif %}
+                                    <img src="{{ question.author.avatar_url }}"
+                                        width="40" height="40" class="img-thumbnail"/>
                                     {{ question.author.username }}
                                 </div>
                             </div>
