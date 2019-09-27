@@ -101,7 +101,9 @@
                 </div>
         </form>
     {% endif %}
-
-<script src={% static 'hasker/js/main.js' %}></script>
-
 {% endblock content %}
+
+{% block js_imports %}
+    <script src="{% static 'hasker/js/utils.js' %}"></script>
+    <script src={% static 'hasker/js/main.js' %}></script>
+{% endblock js_imports %}
