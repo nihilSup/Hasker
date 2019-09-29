@@ -10,8 +10,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'hasker/css/bootstrap.min.css' %}">
-    <script src="{% static 'hasker/js/jquery.min.js' %}"></script>
-    <script src="{% static 'hasker/js/bootstrap.min.js' %}"></script>
     <title>
     {% block title_block %}
         Hasker
@@ -92,11 +90,14 @@
             {% endblock sidebar_block %}
         </div>
     </div>
-    
+
     <footer>
     {% block footer %} 
     {% endblock footer %}
     </footer>
+
+    <script src="{% static 'hasker/js/jquery.min.js' %}"></script>
+    <script src="{% static 'hasker/js/bootstrap.min.js' %}"></script>
     {% block js_imports %}
     {% endblock js_imports %}
 </body>
