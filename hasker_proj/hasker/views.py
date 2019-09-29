@@ -1,20 +1,28 @@
 import json
-import re
 import logging
-logger = logging.getLogger(__name__)
+import re
 
+from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
-from django.conf import settings
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views import View
+from django.utils.decorators import method_decorator
+from django.http import JsonResponse
+from django.views.generic.detail import SingleObjectMixin
+
 from django.urls import reverse
 from django.utils import timezone
 
 from .forms import AnswerForm, QuestionForm, UserForm, UserProfileForm
 from .models import Answer, Question, Tag
+
+logger = logging.getLogger(__name__)
+
+
 
 
 def index(request):
@@ -156,24 +164,34 @@ def question(request, question_id):
                        corr_answer=corr_answer))
 
 
-def process_vote(obj, request):
-    if request.method == 'POST' and request.user.is_authenticated:
+class BaseVotesView(View, SingleObjectMixin):
+    def as_json_resp(self, obj, request):
+        return JsonResponse(dict(
+            user_ups=obj.user_ups(request.user),
+            user_downs=obj.user_downs(request.user),
+            votes=(obj.votes)
+        ))
+
+    def get(self, request, *args, **kwargs):
+        obj = self.get_object()
+        return self.as_json_resp(obj, request)
+
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        obj = self.get_object()
         obj.handle_new_vote(request.user, request.POST['vote_type'])
-    return HttpResponse(json.dumps(dict(
-        user_ups=obj.user_ups(request.user),
-        user_downs=obj.user_downs(request.user),
-        votes=(obj.votes)
-    )))
+        return self.as_json_resp(obj, request)
 
 
-def question_votes(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    return process_vote(question, request)
+
+class QuestionVotesView(BaseVotesView):
+    model = Question
+    pk_url_kwarg = 'question_id'
 
 
-def answer_votes(request, answer_id):
-    answer = get_object_or_404(Answer, pk=answer_id)
-    return process_vote(answer, request)
+class AnswerVotesView(BaseVotesView):
+    model = Answer
+    pk_url_kwarg = 'answer_id'
 
 
 @login_required
