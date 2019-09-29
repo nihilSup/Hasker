@@ -10,7 +10,7 @@ urlpatterns = [
      path('logout/', views.logout, name='logout'),
      path('profile/', views.profile, name='profile'),
      path('ask/', views.ask, name='ask'),
-     path('questions/<int:question_id>', views.question, name='question'),
+     path('questions/<int:question_id>', views.QuestionDetails.as_view(), name='question'),
      path('questions/<int:question_id>/votes/', views.QuestionVotesView.as_view(),
           name='question_votes'),
      path('answers/<int:answer_id>/select/', views.select_answer,

@@ -7,15 +7,15 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
-from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.http import (Http404, HttpResponse, HttpResponseRedirect,
+                         JsonResponse)
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views import View
-from django.utils.decorators import method_decorator
-from django.http import JsonResponse
-from django.views.generic.detail import SingleObjectMixin
-
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.views import View
+from django.views.generic import DetailView
+from django.views.generic.detail import SingleObjectMixin
 
 from .forms import AnswerForm, QuestionForm, UserForm, UserProfileForm
 from .models import Answer, Question, Tag
@@ -126,9 +126,33 @@ def ask(request):
                   dict(q_form=q_form))
 
 
-def question(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    if request.method == 'POST':
+class QuestionDetails(DetailView):
+    model = Question
+    template_name = 'hasker/question.html'
+    pk_url_kwarg = 'question_id'
+    context_object_name = 'question'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        question = self.get_object()
+        answers = (
+            Answer.objects.filter(question=question)
+            .order_by('-votes', '-answered_date')
+        )
+        corr_answer = any(answer.is_correct for answer in answers)
+
+        paginator = Paginator(answers, 4)
+        page = self.request.GET.get('page')
+        answers = paginator.get_page(page)
+        add_answer_form = AnswerForm()
+        context.update(dict(answers=answers,
+                            add_answer_form=add_answer_form,
+                            corr_answer=corr_answer))
+        return context
+
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        question = self.get_object()
         add_answer_form = AnswerForm(request.POST)
         if add_answer_form.is_valid():
             answer_model = add_answer_form.save(commit=False)
@@ -147,21 +171,10 @@ def question(request, question_id):
             )
         else:
             logger.info(add_answer_form.errors)
-    else:
-        add_answer_form = AnswerForm()
-    answers = (
-        Answer.objects.filter(question=question)
-        .order_by('-votes', '-answered_date')
-    )
-    corr_answer = any(answer.is_correct for answer in answers)
-
-    paginator = Paginator(answers, 4)
-    page = request.GET.get('page')
-    answers = paginator.get_page(page)
-    return render(request, 'hasker/question.html',
-                  dict(question=question, answers=answers,
-                       add_answer_form=add_answer_form,
-                       corr_answer=corr_answer))
+        self.object = question
+        context = self.get_context_data()
+        context['form'] = add_answer_form
+        return self.render_to_response(context)
 
 
 class BaseVotesView(View, SingleObjectMixin):
