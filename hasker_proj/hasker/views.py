@@ -16,6 +16,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import DetailView
 from django.views.generic.detail import SingleObjectMixin
+from django.views.generic.edit import FormMixin
 
 from .forms import AnswerForm, QuestionForm, UserForm, UserProfileForm
 from .models import Answer, Question, Tag
@@ -126,11 +127,12 @@ def ask(request):
                   dict(q_form=q_form))
 
 
-class QuestionDetails(DetailView):
+class QuestionDetails(DetailView, FormMixin):
     model = Question
     template_name = 'hasker/question.html'
     pk_url_kwarg = 'question_id'
     context_object_name = 'question'
+    form_class = AnswerForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -150,30 +152,43 @@ class QuestionDetails(DetailView):
                             corr_answer=corr_answer))
         return context
 
+
+    def get_success_url(self):
+        return reverse('question', kwargs={self.pk_url_kwarg: self.object.pk})
+
+    def form_valid(self, form):
+        print('Called')
+        answer_model = form.save(commit=False)
+        question = self.get_object()
+        answer_model.question = question
+        answer_model.author = self.request.user
+        answer_model.answered_date = timezone.now()
+        answer_model.is_correct = False
+        answer_model.save()
+        link = self.request.build_absolute_uri()
+        send_mail(
+            'You have a new answer!',
+            f'Hi, check new answer to {link}',
+            settings.EMAIL_HOST_USER,
+            [question.author.email],
+            fail_silently=True,
+        )
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        logger.info(form.errors)
+        return super().form_invalid(form)
+
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
         question = self.get_object()
-        add_answer_form = AnswerForm(request.POST)
-        if add_answer_form.is_valid():
-            answer_model = add_answer_form.save(commit=False)
-            answer_model.question = question
-            answer_model.author = request.user
-            answer_model.answered_date = timezone.now()
-            answer_model.is_correct = False
-            answer_model.save()
-            link = request.build_absolute_uri()
-            send_mail(
-                'You have a new answer!',
-                f'Hi, check new answer to {link}',
-                settings.EMAIL_HOST_USER,
-                [question.author.email],
-                fail_silently=True,
-            )
-        else:
-            logger.info(add_answer_form.errors)
         self.object = question
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
         context = self.get_context_data()
-        context['form'] = add_answer_form
         return self.render_to_response(context)
 
 
