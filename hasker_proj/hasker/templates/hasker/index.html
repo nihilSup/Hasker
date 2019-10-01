@@ -29,9 +29,9 @@
         {% include "hasker/include/_show_questions.html" with questions=questions %}
 
         {% if sortedby == '-votes' %}
-            {% include "hasker/include/_pager.html" with paged_obj=questions query_addon='&sortby=-votes' %}
+            {% include "hasker/include/_pager.html" with paged_obj=page_obj query_addon='&sortby=-votes' %}
         {% else %}
-            {% include "hasker/include/_pager.html" with paged_obj=questions %}
+            {% include "hasker/include/_pager.html" with paged_obj=page_obj %}
         {% endif %}
     {% else %}
         There are no questions =(

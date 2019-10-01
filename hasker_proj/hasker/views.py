@@ -14,7 +14,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import FormMixin
 
@@ -24,18 +24,28 @@ from .models import Answer, Question, Tag
 logger = logging.getLogger(__name__)
 
 
+class IndexView(ListView):
 
+    model = Question
+    template_name = 'hasker/index.html'
+    context_object_name = 'questions'
+    paginate_by = 4
 
-def index(request):
-    field_name = request.GET.get('sortby')
-    if field_name not in ('-asked_date', '-votes'):
-        field_name = '-asked_date'
-    all_q = Question.objects.order_by(field_name)
-    paginator = Paginator(all_q, 4)
-    page = request.GET.get('page')
-    questions = paginator.get_page(page)
-    return render(request, 'hasker/index.html', dict(questions=questions,
-                                                     sortedby=field_name))
+    @property
+    def sortby(self):
+        field_name = self.request.GET.get('sortby')
+        if field_name not in ('-asked_date', '-votes'):
+            field_name = '-asked_date'
+        return field_name
+
+    def get_queryset(self):
+        return Question.objects.order_by(self.sortby)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['sortedby'] = self.sortby
+        return context
+    
 
 
 def login(request):

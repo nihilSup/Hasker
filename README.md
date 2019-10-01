@@ -65,6 +65,7 @@ Swagger: <http://127.0.0.1:8000/hasker/api/swagger-ui/>
 - <https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html>
 - <http://pawamoy.github.io/2018/02/01/docker-compose-django-postgres-nginx.html>
 - <https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/>
+- <https://docs.djangoproject.com/en/2.2/topics/class-based-views/mixins/#using-formmixin-with-detailview>
 
 #### Rest API links
 
